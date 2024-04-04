@@ -71,9 +71,9 @@ class FormatterImpl : Formatter {
         var string = "let "
         val id = node.variable.identifier.id.value
         string += id
-        spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
+        string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
         string += type(node.variable.dataType.typeToken.type)
-        spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
+        string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
         string += "\n"
@@ -85,7 +85,7 @@ class FormatterImpl : Formatter {
         rules: FormattingRules,
     ): String {
         var string = node.identifier.id.value
-        spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
+        string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
         string += "\n"
@@ -141,9 +141,9 @@ class FormatterImpl : Formatter {
         operator: String,
     ): String {
         var string = ""
-        string += "".repeat(before)
+        string += " ".repeat(before)
         string += operator
-        string += "".repeat(after)
+        string += " ".repeat(after)
         return string
     }
 
