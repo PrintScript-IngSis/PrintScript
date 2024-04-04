@@ -100,4 +100,130 @@ class ParserTest {
             assertEquals("Unexpected token: Token(type=PARENTHESIS_CLOSE, value=), position=12)", e.message)
         }
     }
+
+    @Test
+    fun testParserWhenGivenAnPrintlnStatementShouldBuildCorrectlyAst() {
+        val tokens =
+            listOf(
+                Token(TokenType.OPERATOR_PRINTLN, "println", 0),
+                Token(TokenType.PARENTHESIS_OPEN, "(", 7),
+                Token(TokenType.LITERAL_STRING, "Hello, World!", 8),
+                Token(TokenType.PARENTHESIS_CLOSE, ")", 22),
+                Token(TokenType.SEMICOLON, ";", 23),
+            )
+
+        val parser: Parser = ParserImpl(tokens)
+        val ast = parser.parse()
+
+        val expectedAST =
+            ProgramNode(
+                listOf(
+                    StatementNode.PrintNode(
+                        ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "Hello, World!", 8)),
+                    ),
+                ),
+            )
+        assertEquals(expectedAST, ast)
+    }
+
+    @Test
+    fun testParserWhenGivenAnReassignationStatementShouldBuildCorrectlyAst() {
+        val tokens =
+            listOf(
+                Token(TokenType.IDENTIFIER, "x", 0),
+                Token(TokenType.ASSIGNATOR, "=", 2),
+                Token(TokenType.LITERAL_NUMBER, "5", 4),
+                Token(TokenType.SEMICOLON, ";", 6),
+            )
+        val parser: Parser = ParserImpl(tokens)
+        val ast = parser.parse()
+
+        val expectedAST =
+            ProgramNode(
+                listOf(
+                    StatementNode.AssignationNode(
+                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", 0)),
+                        ExpressionNode.LiteralNode(Token(TokenType.LITERAL_NUMBER, "5", 4)),
+                    ),
+                ),
+            )
+        assertEquals(expectedAST, ast)
+    }
+
+    @Test
+    fun testParserWhenGivenAnIncorrectDeclarationStatementShouldThrowException() {
+        val tokens =
+            listOf(
+                Token(TokenType.KEYWORD_LET, "let", 0),
+                Token(TokenType.IDENTIFIER, "x", 2),
+                Token(TokenType.COLON, ":", 4),
+                Token(TokenType.TYPE_NUMBER, "number", 21),
+                Token(TokenType.ASSIGNATOR, "=", 8),
+                Token(TokenType.SEMICOLON, ";", 12),
+            )
+
+        val parser: Parser = ParserImpl(tokens)
+
+        try {
+            parser.parse()
+        } catch (e: Exception) {
+            assertEquals("Expected value after assignment operator", e.message)
+        }
+    }
+
+    @Test
+    fun testParserWhenGivenAnIncorrectPrintStatementWithExtraStringShouldThrowException() {
+        val tokens =
+            listOf(
+                Token(TokenType.OPERATOR_PRINTLN, "println", 0),
+                Token(TokenType.PARENTHESIS_OPEN, "(", 7),
+                Token(TokenType.LITERAL_STRING, "Hello, World!", 8),
+                Token(TokenType.PARENTHESIS_CLOSE, ")", 22),
+                Token(TokenType.OPERATOR_PLUS, "+", 23),
+                Token(TokenType.SEMICOLON, ";", 24),
+            )
+
+        val parser: Parser = ParserImpl(tokens)
+
+        try {
+            parser.parse()
+        } catch (e: Exception) {
+            assertEquals("Expected term after operator", e.message)
+        }
+    }
+
+    @Test
+    fun testParserWhenGivenAnIncorrectPrintStatementShouldThrowException() {
+        val tokens =
+            listOf(
+                Token(TokenType.OPERATOR_PRINTLN, "println", 0),
+                Token(TokenType.SEMICOLON, ";", 24),
+            )
+
+        val parser: Parser = ParserImpl(tokens)
+
+        try {
+            parser.parse()
+        } catch (e: Exception) {
+            assertEquals("Expected value after print operator", e.message)
+        }
+    }
+
+    @Test
+    fun testParserWhenReasignationStatementWithoutValueShouldThrowException() {
+        val tokens =
+            listOf(
+                Token(TokenType.IDENTIFIER, "x", 0),
+                Token(TokenType.ASSIGNATOR, "=", 2),
+                Token(TokenType.SEMICOLON, ";", 4),
+            )
+
+        val parser: Parser = ParserImpl(tokens)
+
+        try {
+            parser.parse()
+        } catch (e: Exception) {
+            assertEquals("Expected value after reassignment operator", e.message)
+        }
+    }
 }

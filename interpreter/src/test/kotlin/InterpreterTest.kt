@@ -540,4 +540,99 @@ class InterpreterTest {
 
         assertEquals("1.0", interpreter.getVariables()["x"]?.value)
     }
+
+    @Test
+    fun testInterpreterWhenRecievingAnAssignationWhenTheVariableDoesNotExistsShouldThrowException() {
+        val astJson = """{
+    "statements":[
+        {
+            "type":"org.example.ast.nodes.StatementNode.AssignationNode",
+            "identifier":{
+                "id":{
+                    "type":"IDENTIFIER",
+                    "value":"x",
+                    "position":2
+                }
+            },
+            "expression":{
+                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
+                "token":{
+                    "type":"LITERAL_NUMBER",
+                    "value":"5.0",
+                    "position":10
+                }
+            }
+        }
+    ]
+}"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl(ast)
+
+        try {
+            interpreter.interpret()
+        } catch (e: Exception) {
+            assertEquals("Variable x not found", e.message)
+        }
+    }
+
+    @Test
+    fun testInterpreterWhenRecievingAnAssignationWhenTheVariableTypeMismatchesShouldThrowException() {
+        val astJson = """{
+    "statements":[
+        {
+            "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            "variable":{
+                "identifier":{
+                    "id":{
+                        "type":"IDENTIFIER",
+                        "value":"x",
+                        "position":2
+                    }
+                },
+                "dataType":{
+                    "typeToken":{
+                        "type":"TYPE_NUMBER",
+                        "value":"number",
+                        "position":21
+                    }
+                }
+            },
+            "expression":{
+                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
+                "token":{
+                    "type":"LITERAL_NUMBER",
+                    "value":"5.0",
+                    "position":10
+                }
+            }
+        },
+        {
+            "type":"org.example.ast.nodes.StatementNode.AssignationNode",
+            "identifier":{
+                "id":{
+                    "type":"IDENTIFIER",
+                    "value":"x",
+                    "position":2
+                }
+            },
+            "expression":{
+                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
+                "token":{
+                    "type":"LITERAL_STRING",
+                    "value":"Hello, World!",
+                    "position":10
+                }
+            }
+        }
+    ]
+}"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl(ast)
+
+        try {
+            interpreter.interpret()
+        } catch (e: Exception) {
+            assertEquals("Type mismatch", e.message)
+        }
+    }
 }
