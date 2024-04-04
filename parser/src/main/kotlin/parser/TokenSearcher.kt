@@ -7,18 +7,6 @@ class TokenSearcher {
     companion object {
         fun searchForToken(
             tokens: List<Token>,
-            tokenType: TokenType,
-        ): Token {
-            for (token in tokens) {
-                if (token.type == tokenType) {
-                    return token
-                }
-            }
-            throw Exception("Token not found")
-        }
-
-        fun searchForToken(
-            tokens: List<Token>,
             tokenTypes: List<TokenType>,
         ): Token {
             for (token in tokens) {
