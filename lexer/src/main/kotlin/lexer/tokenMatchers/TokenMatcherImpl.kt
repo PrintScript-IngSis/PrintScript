@@ -7,6 +7,7 @@ class TokenMatcherImpl : TokenMatcher {
             Regex("let") to TokenType.KEYWORD_LET,
             Regex("string") to TokenType.TYPE_STRING,
             Regex("number") to TokenType.TYPE_NUMBER,
+            Regex("boolean") to TokenType.TYPE_BOOLEAN,
             Regex("println") to TokenType.OPERATOR_PRINTLN,
             Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
             Regex("=") to TokenType.ASSIGNATOR,

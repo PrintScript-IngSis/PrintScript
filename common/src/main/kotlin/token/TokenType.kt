@@ -10,6 +10,7 @@ enum class TokenType {
     LITERAL_STRING,
     TYPE_STRING, // let a:number = 5
     TYPE_NUMBER,
+    TYPE_BOOLEAN,
     OPERATOR_PLUS,
     OPERATOR_MINUS,
     OPERATOR_MULTIPLY, // priority 1
