@@ -7,7 +7,7 @@ import org.example.token.Token
 sealed class ExpressionNode : Node() {
     @Serializable
     data class BinaryOperationNode(
-        val value: Token,
+        val token: Token,
         val leftChild: ExpressionNode,
         val rightChild: ExpressionNode,
     ) : ExpressionNode()
@@ -16,8 +16,17 @@ sealed class ExpressionNode : Node() {
     data class LiteralNode(val token: Token) : ExpressionNode()
 
     @Serializable
-    data class IdentifierNode(val id: Token) : ExpressionNode()
+    data class IdentifierNode(val token: Token) : ExpressionNode()
 
     @Serializable
-    data class TypeNode(val typeToken: Token) : ExpressionNode()
+    data class TypeNode(val token: Token) : ExpressionNode()
+
+    fun getToken(): Token{
+        return when (this) {
+            is BinaryOperationNode -> token
+            is LiteralNode -> token
+            is IdentifierNode -> token
+            is TypeNode -> token
+        }
+    }
 }

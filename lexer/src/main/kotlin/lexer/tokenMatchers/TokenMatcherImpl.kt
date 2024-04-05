@@ -5,6 +5,9 @@ class TokenMatcherImpl : TokenMatcher {
     private val regexMap: Map<Regex, TokenType> =
         mapOf(
             Regex("let") to TokenType.KEYWORD_LET,
+            Regex("const") to TokenType.KEYWORD_CONST,
+            Regex("if") to TokenType.KEYWORD_IF,
+            Regex("else") to TokenType.KEYWORD_ELSE,
             Regex("string") to TokenType.TYPE_STRING,
             Regex("number") to TokenType.TYPE_NUMBER,
             Regex("boolean") to TokenType.TYPE_BOOLEAN,
@@ -14,6 +17,7 @@ class TokenMatcherImpl : TokenMatcher {
             Regex(":") to TokenType.COLON,
             Regex(";") to TokenType.SEMICOLON,
             Regex("[0-9]+") to TokenType.LITERAL_NUMBER,
+            Regex("true|false") to TokenType.LITERAL_BOOLEAN,
             Regex("""(['"]).*?\1""") to TokenType.LITERAL_STRING,
             Regex("\\+") to TokenType.OPERATOR_PLUS,
             Regex("-") to TokenType.OPERATOR_MINUS,

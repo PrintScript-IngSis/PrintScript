@@ -69,10 +69,10 @@ class FormatterImpl : Formatter {
         rules: FormattingRules,
     ): String {
         var string = "let "
-        val id = node.variable.identifier.id.value
+        val id = node.variable.identifier.token.value
         string += id
         string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
-        string += type(node.variable.dataType.typeToken.type)
+        string += type(node.variable.dataType.token.type)
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
@@ -84,7 +84,7 @@ class FormatterImpl : Formatter {
         node: StatementNode.AssignationNode,
         rules: FormattingRules,
     ): String {
-        var string = node.identifier.id.value
+        var string = node.identifier.token .value
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
@@ -106,11 +106,11 @@ class FormatterImpl : Formatter {
             }
 
             is ExpressionNode.IdentifierNode -> {
-                node.id.value
+                node.token.value
             }
 
             is ExpressionNode.TypeNode -> {
-                node.typeToken.value
+                node.token.value
             }
 
             else -> throw Exception("Unknown node type")
@@ -123,7 +123,7 @@ class FormatterImpl : Formatter {
     ): String {
         val left = evaluateExpressionNode(node.leftChild, rules)
         val right = evaluateExpressionNode(node.rightChild, rules)
-        val operation = node.value.value
+        val operation = node.token.value
         return "$left $operation $right"
     }
 
@@ -131,6 +131,7 @@ class FormatterImpl : Formatter {
         return when (type) {
             TokenType.TYPE_NUMBER -> "number"
             TokenType.TYPE_STRING -> "string"
+            TokenType.TYPE_BOOLEAN -> "boolean"
             else -> throw Exception("Unknown type")
         }
     }

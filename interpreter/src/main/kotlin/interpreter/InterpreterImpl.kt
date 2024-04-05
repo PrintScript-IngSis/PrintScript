@@ -1,5 +1,6 @@
 package org.example.interpreter
 
+import org.example.MutableHelper
 import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.Node
 import org.example.ast.nodes.ProgramNode
@@ -8,9 +9,9 @@ import org.example.factories.Literal
 import org.example.token.TokenType
 
 class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
-    private val variables = mutableMapOf<String, Literal>()
+    private val variables = mapOf<String, Literal>()
 
-    fun getVariables(): MutableMap<String, Literal> {
+    fun getVariables(): Map<String, Literal> {
         return variables
     }
 
@@ -46,7 +47,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     }
 
     private fun printValueOfId(node: ExpressionNode.IdentifierNode) {
-        val id = node.id.value
+        val id = node.token.value
         if (variables.containsKey(id)) {
             println(variables.getValue(id).value)
         } else {
@@ -55,12 +56,14 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     }
 
     private fun interpretDeclarationNode(node: StatementNode.DeclarationNode) {
-        val id = node.variable.identifier.id.value
+        val id = node.variable.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {
             throw Exception("Variable $id already exists")
         }
-        variables[id] = expression
+        val map = variables.toMutableMap()
+        map[id] = expression
+        map.toMap()
     }
 
     private fun getExpression(node: Node): Literal {
@@ -69,7 +72,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
                 binaryExpression(node)
             }
             is ExpressionNode.LiteralNode -> {
-                Literal(node.token.value, node.token.type)
+                Literal(node.token.value, node.token.type, MutableHelper.isMutable(node.token))
             }
             is ExpressionNode.IdentifierNode -> {
                 identifierExpression(node)
@@ -79,9 +82,9 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     }
 
     private fun identifierExpression(node: ExpressionNode.IdentifierNode): Literal {
-        val id = node.id.value
+        val id = node.token.value
         if (variables.containsKey(id)) {
-            return Literal(variables.getValue(id).value, variables.getValue(id).type)
+            return Literal(variables.getValue(id).value, variables.getValue(id).type,  MutableHelper.isMutable(node.token))
         } else {
             throw Exception("Variable $id not found")
         }
@@ -91,21 +94,21 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         val left = getExpression(node.leftChild)
         val right = getExpression(node.rightChild)
 
-        return when (node.value.type) {
+        return when (node.token.type) {
             TokenType.OPERATOR_PLUS -> {
-                evaluateAddition(left, right)
+                evaluateAddition(left, right, node)
             }
             TokenType.OPERATOR_MINUS -> {
-                evaluateSubtraction(left, right)
+                evaluateSubtraction(left, right,node)
             }
             TokenType.OPERATOR_MULTIPLY -> {
-                evaluateMultiplication(left, right)
+                evaluateMultiplication(left, right, node)
             }
             TokenType.OPERATOR_DIVIDE -> {
-                evaluateDivision(left, right)
+                evaluateDivision(left, right, node)
             }
             TokenType.LITERAL_NUMBER -> {
-                return Literal((node.value.value), node.value.type)
+                return Literal((node.token.value), node.token.type,MutableHelper.isMutable(node.token))
             }
             else -> throw Exception("Unknown operator")
         }
@@ -114,42 +117,52 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     private fun evaluateAddition(
         left: Literal,
         right: Literal,
+        node: ExpressionNode
     ): Literal {
         if (left.type == TokenType.LITERAL_NUMBER && right.type == TokenType.LITERAL_NUMBER) {
-            return Literal((left.value.toDouble() + right.value.toDouble()).toString(), TokenType.LITERAL_NUMBER)
+            return Literal((left.value.toDouble() + right.value.toDouble()).toString(), TokenType.LITERAL_NUMBER, MutableHelper.isMutable(node.getToken()))
         }
-        return Literal((left.value + right.value), left.type)
+        return Literal((left.value + right.value), left.type,MutableHelper.isMutable(node.getToken()))
     }
 
     private fun evaluateSubtraction(
         left: Literal,
         right: Literal,
+        node: ExpressionNode
     ): Literal {
-        return Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type)
+        return Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.getToken()))
     }
 
     private fun evaluateMultiplication(
         left: Literal,
         right: Literal,
+        node: ExpressionNode
     ): Literal {
-        return Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type)
+        return Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.getToken()))
     }
 
     private fun evaluateDivision(
         left: Literal,
         right: Literal,
+        node: ExpressionNode
     ): Literal {
-        return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type)
+        return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.getToken()))
     }
 
     private fun interpretAssignationNode(node: StatementNode.AssignationNode) {
-        val id = node.identifier.id.value
+        val id = node.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {
             if (variables.getValue(id).type != expression.type) {
                 throw Exception("Type mismatch")
             }
-            variables[id] = expression
+            if (variables.getValue(id).isMutable) {
+                val map = variables.toMutableMap()
+                map[id] = expression
+                map.toMap()
+            } else {
+                throw Exception("Variable $id is not mutable")
+            }
         } else {
             throw Exception("Variable $id not found")
         }
