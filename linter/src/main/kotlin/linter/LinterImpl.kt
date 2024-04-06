@@ -75,10 +75,10 @@ class LinterImpl : Linter {
     ): List<Error> {
         val clonedErrors = errors.toList()
         if (rules.idFormat == "camelCase") {
-            return clonedErrors + evaluateIfCamelCase(node.id)
+            return clonedErrors + evaluateIfCamelCase(node.token)
         }
         if (rules.idFormat == "snake_case") {
-            return clonedErrors + evaluateIfSnakeCase(node.id)
+            return clonedErrors + evaluateIfSnakeCase(node.token)
         }
         return clonedErrors
     }

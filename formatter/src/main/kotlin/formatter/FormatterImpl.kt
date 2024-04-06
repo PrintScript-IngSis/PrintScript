@@ -8,20 +8,18 @@ import org.example.token.TokenType
 import java.io.File
 
 class FormatterImpl : Formatter {
-    override fun format(ast: ProgramNode): String {
-        return format(ast, File("formatter/src/main/resources/rules.json"))
+    override fun format(ast: ProgramNode,path : String): String {
+        return format(ast, File(path))
     }
 
-    fun format(
+    private fun format(
         ast: ProgramNode,
         file: File,
     ): String {
         val json = file.readText()
-
         val gson = Gson()
         val rulesWrapper: FormattingRulesWrapper = gson.fromJson(json, FormattingRulesWrapper::class.java)
         val rules = rulesWrapper.rules
-
         return evaluate(ast, rules)
     }
 
