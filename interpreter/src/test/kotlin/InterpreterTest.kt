@@ -1,6 +1,7 @@
 import kotlinx.serialization.json.Json
 import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.ProgramNode
+import org.example.factories.Position
 import org.example.interpreter.InterpreterImpl
 import org.example.token.Token
 import org.example.token.TokenType
@@ -19,14 +20,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -35,7 +36,7 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"5.0",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       }
@@ -59,14 +60,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -75,12 +76,13 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"5",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -94,14 +96,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -110,12 +112,13 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"5",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast2 = Json.decodeFromString<ProgramNode>(astJson2)
         val interpreter2 = InterpreterImpl(ast2)
 
@@ -137,12 +140,13 @@ class InterpreterTest {
             "id":{
                "type":"IDENTIFIER",
                "value":"y",
-               "position":2
+               "position":{"line":0,"column":2}
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
 
@@ -155,7 +159,7 @@ class InterpreterTest {
 
     @Test
     fun testInterpreterWhenRecievingAnInvalidNodeShouldThrowException() {
-        val ast = ProgramNode(listOf(ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", 0))))
+        val ast = ProgramNode(listOf(ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0)))))
         val interpreter = InterpreterImpl(ast)
 
         try {
@@ -176,14 +180,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -192,14 +196,14 @@ class InterpreterTest {
             "value":{
                "type":"OPERATOR_PLUS",
                "value":"+",
-               "position":12
+               "position":{"line":0,"column":12}
             },
             "leftChild":{
                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":10
+                  "position":{"line":0,"column":10}
                }
             },
             "rightChild":{
@@ -207,13 +211,14 @@ class InterpreterTest {
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":14
+                  "position":{"line":0,"column":14}
                }
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -232,14 +237,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -248,7 +253,7 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"5.0",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       },
@@ -259,14 +264,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"y",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -275,12 +280,13 @@ class InterpreterTest {
             "id":{
                "type":"IDENTIFIER",
                "value":"x",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -299,14 +305,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -315,7 +321,7 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"5.0",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       },
@@ -326,14 +332,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"y",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -342,7 +348,7 @@ class InterpreterTest {
             "token":{
                "type":"LITERAL_NUMBER",
                "value":"4.0",
-               "position":10
+               "position":{"line":0,"column":10}
             }
          }
       },
@@ -352,7 +358,7 @@ class InterpreterTest {
             "id":{
                "type":"IDENTIFIER",
                "value":"y",
-               "position":2
+               "position":{"line":0,"column":2}
             }
          },
          "expression":{
@@ -360,12 +366,13 @@ class InterpreterTest {
             "id":{
                "type":"IDENTIFIER",
                "value":"x",
-               "position":6
+               "position":{"line":0,"column":6}
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -384,14 +391,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -400,14 +407,14 @@ class InterpreterTest {
             "value":{
                "type":"OPERATOR_MINUS",
                "value":"-",
-               "position":12
+               "position":{"line":0,"column":12}
             },
             "leftChild":{
                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":10
+                  "position":{"line":0,"column":10}
                }
             },
             "rightChild":{
@@ -415,13 +422,14 @@ class InterpreterTest {
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":14
+                  "position":{"line":0,"column":14}
                }
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -440,14 +448,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -456,14 +464,14 @@ class InterpreterTest {
             "value":{
                "type":"OPERATOR_MULTIPLY",
                "value":"*",
-               "position":12
+               "position":{"line":0,"column":12}
             },
             "leftChild":{
                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":10
+                  "position":{"line":0,"column":10}
                }
             },
             "rightChild":{
@@ -471,13 +479,14 @@ class InterpreterTest {
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":14
+                  "position":{"line":0,"column":14}
                }
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -496,14 +505,14 @@ class InterpreterTest {
                "id":{
                   "type":"IDENTIFIER",
                   "value":"x",
-                  "position":2
+                  "position":{"line":0,"column":2}
                }
             },
             "dataType":{
                "typeToken":{
                   "type":"TYPE_NUMBER",
                   "value":"number",
-                  "position":21
+                  "position":{"line":0,"column":21}
                }
             }
          },
@@ -512,14 +521,14 @@ class InterpreterTest {
             "value":{
                "type":"OPERATOR_DIVIDE",
                "value":"/",
-               "position":12
+               "position":{"line":0,"column":12}
             },
             "leftChild":{
                "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":10
+                  "position":{"line":0,"column":10}
                }
             },
             "rightChild":{
@@ -527,13 +536,14 @@ class InterpreterTest {
                "token":{
                   "type":"LITERAL_NUMBER",
                   "value":"5",
-                  "position":14
+                  "position":{"line":0,"column":14}
                }
             }
          }
       }
    ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
         interpreter.interpret()
@@ -551,7 +561,7 @@ class InterpreterTest {
                 "id":{
                     "type":"IDENTIFIER",
                     "value":"x",
-                    "position":2
+                    "position":{"line":0,"column":2}
                 }
             },
             "expression":{
@@ -559,12 +569,13 @@ class InterpreterTest {
                 "token":{
                     "type":"LITERAL_NUMBER",
                     "value":"5.0",
-                    "position":10
+                    "position":{"line":0,"column":10}
                 }
             }
         }
     ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
 
@@ -586,14 +597,14 @@ class InterpreterTest {
                     "id":{
                         "type":"IDENTIFIER",
                         "value":"x",
-                        "position":2
+                        "position":{"line":0,"column":2}
                     }
                 },
                 "dataType":{
                     "typeToken":{
                         "type":"TYPE_NUMBER",
                         "value":"number",
-                        "position":21
+                        "position":{"line":0,"column":21}
                     }
                 }
             },
@@ -602,7 +613,7 @@ class InterpreterTest {
                 "token":{
                     "type":"LITERAL_NUMBER",
                     "value":"5.0",
-                    "position":10
+                    "position":{"line":0,"column":10}
                 }
             }
         },
@@ -612,7 +623,7 @@ class InterpreterTest {
                 "id":{
                     "type":"IDENTIFIER",
                     "value":"x",
-                    "position":2
+                    "position":{"line":0,"column":2}
                 }
             },
             "expression":{
@@ -620,12 +631,13 @@ class InterpreterTest {
                 "token":{
                     "type":"LITERAL_STRING",
                     "value":"Hello, World!",
-                    "position":10
+                    "position":{"line":0,"column":10}
                 }
             }
         }
     ]
-}"""
+}
+"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl(ast)
 

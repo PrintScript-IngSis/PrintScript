@@ -1,5 +1,6 @@
 package org.example.lexer
 
+import org.example.factories.Position
 import org.example.factories.TokenFactory
 import org.example.lexer.stringDivider.StringDividerImpl
 import org.example.lexer.tokenMatchers.TokenMatcherImpl
@@ -10,11 +11,36 @@ class LexerImpl() : Lexer {
     private val stringDivider = StringDividerImpl()
 
     override fun tokenize(input: String): List<Token> {
+        var acumulatedPos = 0
         return stringDivider.stringToList(input).flatMapIndexed { lineIndex, line ->
-            line.mapIndexed { wordIndex, word ->
-                val position = lineIndex * (line.size + 1) + wordIndex * (word.length + 1)
-                TokenFactory.createValueToken(tokenMatcher.getToken(word, position), word, position)
+            line.mapIndexed { _, word ->
+                val totalLength = line.map { it.length }.sum() + countSpaces(input) - 1
+                val position = word.length + checkForSpaces(acumulatedPos + word.length, input, totalLength) + acumulatedPos
+                TokenFactory.createValueToken(
+                    tokenMatcher.getToken(word, Position(lineIndex, position)),
+                    word,
+                    Position(lineIndex, acumulatedPos),
+                )
+                    .also { acumulatedPos = position }
             }
         }
+    }
+
+    private fun checkForSpaces(
+        position: Int,
+        input: String,
+        length: Int,
+    ): Int {
+        return if (position >= length) {
+            0
+        } else if (input[position] != ' ') {
+            0
+        } else {
+            1
+        }
+    }
+
+    private fun countSpaces(input: String): Int {
+        return input.count { it == ' ' }
     }
 }
