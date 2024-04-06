@@ -19,7 +19,7 @@ class FormatterTest {
                 ),
             )
         val formatter = FormatterImpl()
-        val formatted = formatter.format(tokens, "src/test/resources/rules.json")
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
         assertEquals("\n\nprintln(4);\n", formatted)
     }
 
@@ -39,7 +39,7 @@ class FormatterTest {
                 ),
             )
         val formatter = FormatterImpl()
-        val formatted = formatter.format(tokens, "src/test/resources/rules.json")
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
         assertEquals("let x : number = 5;\n", formatted)
     }
 
@@ -55,7 +55,7 @@ class FormatterTest {
                 ),
             )
         val formatter = FormatterImpl()
-        val formatted = formatter.format(tokens, "src/test/resources/rules.json")
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
         assertEquals("x = 5;\n", formatted)
     }
 
@@ -76,7 +76,7 @@ class FormatterTest {
                 ),
             )
         val formatter = FormatterImpl()
-        val formatted = formatter.format(tokens, "src/test/resources/rules.json")
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
         assertEquals("x = 5 + 5;\n", formatted)
     }
 }
