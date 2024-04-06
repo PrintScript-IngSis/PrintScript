@@ -1,5 +1,6 @@
 import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.ProgramNode
+import org.example.factories.Position
 import org.example.interpreter.InterpreterImpl
 import org.example.parser.ParserImpl
 import org.example.token.Token
@@ -12,13 +13,13 @@ class InterpreterTest {
     fun testInterpreterWhenDeclaringAVariableAndItDoesNotExistsShouldSaveIt() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5.0", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 4)),
+                Token(TokenType.COLON, ":", Position(0, 6)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 23)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 10)),
+                Token(TokenType.LITERAL_NUMBER, "5.0", Position(0, 12)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 14)),
             )
 
         val parser = ParserImpl(tokens)
@@ -33,13 +34,13 @@ class InterpreterTest {
     fun testInterpreterWhenDeclaringAVariableAndItAlreadyExistsShouldThrowException() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 4)),
+                Token(TokenType.COLON, ":", Position(0, 6)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 23)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 10)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 12)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 14)),
             )
 
         val parser = ParserImpl(tokens)
@@ -49,13 +50,13 @@ class InterpreterTest {
 
         val tokens2 =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 4)),
+                Token(TokenType.COLON, ":", Position(0, 6)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 23)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 10)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 12)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 14)),
             )
 
         val parser2 = ParserImpl(tokens2)
@@ -71,16 +72,16 @@ class InterpreterTest {
 
     @Test
     fun testInterpreterWhenPrintingAVariableThatDoesNotExistsShouldThrowException() {
-        val tokens2 =
+        val tokens =
             listOf(
-                Token(TokenType.OPERATOR_PRINTLN, "println", 0),
-                Token(TokenType.PARENTHESIS_OPEN, "(", 1),
-                Token(TokenType.IDENTIFIER, "y", 2),
-                Token(TokenType.PARENTHESIS_CLOSE, ")", 3),
-                Token(TokenType.SEMICOLON, ";", 4),
+                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 0)),
+                Token(TokenType.PARENTHESIS_OPEN, "(", Position(0, 1)),
+                Token(TokenType.IDENTIFIER, "y", Position(0, 2)),
+                Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 3)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 4)),
             )
 
-        val parser2 = ParserImpl(tokens2)
+        val parser2 = ParserImpl(tokens)
         val ast2 = parser2.parse()
         val interpreter2 = InterpreterImpl(ast2)
 
@@ -93,7 +94,7 @@ class InterpreterTest {
 
     @Test
     fun testInterpreterWhenRecievingAnInvalidNodeShouldThrowException() {
-        val ast = ProgramNode(listOf(ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", 0))))
+        val ast = ProgramNode(listOf(ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0)))))
         val interpreter = InterpreterImpl(ast)
 
         try {
@@ -107,15 +108,15 @@ class InterpreterTest {
     fun testInterpreterWhenRecievingADeclarationWithABinaryOperationShouldSaveTheResult() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.OPERATOR_PLUS, "+", 12),
-                Token(TokenType.LITERAL_NUMBER, "5", 14),
-                Token(TokenType.SEMICOLON, ";", 16),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10)),
+                Token(TokenType.OPERATOR_PLUS, "+", Position(0, 12)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 14)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 16)),
             )
 
         val parser = ParserImpl(tokens)
@@ -130,20 +131,20 @@ class InterpreterTest {
     fun testInterpreterWhenRecievingADeclarationWithAnIdentifierShouldSaveTheResult() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5.0", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "y", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.IDENTIFIER, "x", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5.0", Position(0, 10)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 12)),
+                Token(TokenType.KEYWORD_LET, "let", Position(1, 0)),
+                Token(TokenType.IDENTIFIER, "y", Position(1, 2)),
+                Token(TokenType.COLON, ":", Position(1, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(1, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(1, 8)),
+                Token(TokenType.IDENTIFIER, "x", Position(1, 10)),
+                Token(TokenType.SEMICOLON, ";", Position(1, 12)),
             )
 
         val parser = ParserImpl(tokens)
@@ -158,23 +159,23 @@ class InterpreterTest {
     fun testInterpreterWhenAssignationAVariableToAnotherVariableShouldSaveItCorrectly() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5.0", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "y", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "4.0", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
-                Token(TokenType.IDENTIFIER, "y", 2),
-                Token(TokenType.ASSIGNATOR, "=", 4),
-                Token(TokenType.IDENTIFIER, "x", 6),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5.0", Position(0, 10)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 12)),
+                Token(TokenType.KEYWORD_LET, "let", Position(1, 0)),
+                Token(TokenType.IDENTIFIER, "y", Position(1, 2)),
+                Token(TokenType.COLON, ":", Position(1, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(1, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(1, 8)),
+                Token(TokenType.LITERAL_NUMBER, "4.0", Position(1, 10)),
+                Token(TokenType.SEMICOLON, ";", Position(1, 12)),
+                Token(TokenType.IDENTIFIER, "y", Position(2, 2)),
+                Token(TokenType.ASSIGNATOR, "=", Position(2, 4)),
+                Token(TokenType.IDENTIFIER, "x", Position(2, 6)),
             )
 
         val parser = ParserImpl(tokens)
@@ -189,15 +190,15 @@ class InterpreterTest {
     fun testInterpreterWhenRecievingADeclarationWithABinaryOperationMinusShouldSaveTheResult() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.OPERATOR_MINUS, "-", 12),
-                Token(TokenType.LITERAL_NUMBER, "5", 14),
-                Token(TokenType.SEMICOLON, ";", 16),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10)),
+                Token(TokenType.OPERATOR_MINUS, "-", Position(0, 12)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 14)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 16)),
             )
 
         val parser = ParserImpl(tokens)
@@ -212,15 +213,15 @@ class InterpreterTest {
     fun testInterpreterWhenRecievingADeclarationWithABinaryOperationMultiplyShouldSaveTheResult() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.OPERATOR_MULTIPLY, "*", 12),
-                Token(TokenType.LITERAL_NUMBER, "5", 14),
-                Token(TokenType.SEMICOLON, ";", 16),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10)),
+                Token(TokenType.OPERATOR_MULTIPLY, "*", Position(0, 12)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 14)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 16)),
             )
 
         val parser = ParserImpl(tokens)
@@ -235,15 +236,15 @@ class InterpreterTest {
     fun testInterpreterWhenRecievingADeclarationWithABinaryOperationDivideShouldSaveTheResult() {
         val tokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5", 10),
-                Token(TokenType.OPERATOR_DIVIDE, "/", 12),
-                Token(TokenType.LITERAL_NUMBER, "5", 14),
-                Token(TokenType.SEMICOLON, ";", 16),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 8)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10)),
+                Token(TokenType.OPERATOR_DIVIDE, "/", Position(0, 12)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 14)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 16)),
             )
 
         val parser = ParserImpl(tokens)

@@ -86,7 +86,14 @@ class LinterImpl : Linter {
     private fun evaluateIfCamelCase(node: Token): List<Error> {
         val error = listOf<Error>()
         if (!evaluateIfCamelCase(node.value)) {
-            return error + (Error("Identifier ${node.value} is not in camelCase format"))
+            return error +
+                (
+                    Error(
+                        "Identifier ${node.value} is not in camelCase format in line " +
+                            "${node.position.line} and column " +
+                            "${node.position.column}",
+                    )
+                )
         }
         return error
     }
@@ -94,7 +101,14 @@ class LinterImpl : Linter {
     private fun evaluateIfSnakeCase(node: Token): List<Error> {
         val error = listOf<Error>()
         if (evaluateIfSnakeCase(node.value)) {
-            return error + (Error("Identifier ${node.value} is not in snake_case format"))
+            return error +
+                (
+                    Error(
+                        "Identifier ${node.value} is not in snake_case format in line " +
+                            "${node.position.line} and column " +
+                            "${node.position.column}\"",
+                    )
+                )
         }
         return error
     }
@@ -123,7 +137,12 @@ class LinterImpl : Linter {
     private fun evaluateIfOperationInPrintln(node: StatementNode.PrintNode): List<Error> {
         val error = listOf<Error>()
         if (node.printable is ExpressionNode.BinaryOperationNode) {
-            return error + Error("Binary operation in println")
+            return error +
+                Error(
+                    "Binary operation in println in line " +
+                        "${node.printable.token().position.line} and column " +
+                        "${node.printable.token().position.column}",
+                )
         }
         return error
     }
