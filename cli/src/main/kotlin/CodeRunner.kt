@@ -26,6 +26,9 @@ class CodeRunner : CliktCommand() {
     private val outputFile by argument(help = "Output file for formatter")
         .file(canBeDir = false, canBeFile = true).optional()
 
+    private val defaultFormatterRules = "cli/src/main/resources/DefaultFormatterRules.json"
+    private val defaultLinterRules = "cli/src/main/resources/DefaultLinterRules.json"
+
     override fun run() {
         try {
             inputFile.let { file ->
@@ -61,19 +64,19 @@ class CodeRunner : CliktCommand() {
     private fun runLinter(input: ProgramNode) {
         echo("Running linter on file ${inputFile.name}... \n")
         val linter = LinterImpl()
-        linter.checkErrors(input).forEach { echo(it.toString()) }
+        linter.checkErrors(input, defaultLinterRules).forEach { echo(it.toString()) }
     }
 
     private fun runFormatter(input: ProgramNode) {
         if (outputFile == null) {
             echo("Formatting file ${inputFile.name}... \n")
             val formatter = FormatterImpl()
-            val formatted = formatter.format(input)
+            val formatted = formatter.format(input, defaultFormatterRules)
             inputFile.writeText(formatted)
         } else {
             echo("Formatting file ${inputFile.name} to ${outputFile!!.name}... \n")
             val formatter = FormatterImpl()
-            val formatted = formatter.format(input)
+            val formatted = formatter.format(input, defaultFormatterRules)
             outputFile!!.writeText(formatted)
         }
     }
