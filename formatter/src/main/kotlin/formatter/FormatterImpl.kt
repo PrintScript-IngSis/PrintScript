@@ -8,8 +8,11 @@ import org.example.token.TokenType
 import java.io.File
 
 class FormatterImpl : Formatter {
-    override fun format(ast: ProgramNode): String {
-        return format(ast, File("formatter/src/main/resources/rules.json"))
+    override fun format(
+        ast: ProgramNode,
+        path: String,
+    ): String {
+        return format(ast, File(path))
     }
 
     fun format(

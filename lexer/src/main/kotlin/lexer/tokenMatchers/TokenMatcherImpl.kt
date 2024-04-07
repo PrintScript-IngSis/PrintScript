@@ -1,4 +1,5 @@
 package org.example.lexer.tokenMatchers
+import org.example.factories.Position
 import org.example.token.TokenType
 
 class TokenMatcherImpl : TokenMatcher {
@@ -24,13 +25,13 @@ class TokenMatcherImpl : TokenMatcher {
 
     override fun getToken(
         input: String,
-        position: Int,
+        position: Position,
     ): TokenType {
         for ((regex, tokenType) in regexMap) {
             if (regex.matches(input)) {
                 return tokenType
             }
         }
-        throw IllegalArgumentException("No matching token for input: $input, in line: $position")
+        throw IllegalArgumentException("No matching token for input: $input, in line ${position.line} and column ${position.column}")
     }
 }

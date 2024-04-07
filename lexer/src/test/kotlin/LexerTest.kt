@@ -1,3 +1,4 @@
+import org.example.factories.Position
 import org.example.lexer.Lexer
 import org.example.lexer.LexerImpl
 import org.example.token.Token
@@ -22,13 +23,13 @@ class LexerTest {
 
         val expectedTokens =
             listOf(
-                Token(TokenType.KEYWORD_LET, "let", 0),
-                Token(TokenType.IDENTIFIER, "x", 2),
-                Token(TokenType.COLON, ":", 4),
-                Token(TokenType.TYPE_NUMBER, "number", 21),
-                Token(TokenType.ASSIGNATOR, "=", 8),
-                Token(TokenType.LITERAL_NUMBER, "5.0", 10),
-                Token(TokenType.SEMICOLON, ";", 12),
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 4)),
+                Token(TokenType.COLON, ":", Position(0, 6)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 8)),
+                Token(TokenType.ASSIGNATOR, "=", Position(0, 15)),
+                Token(TokenType.LITERAL_NUMBER, "5.0", Position(0, 17)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 18)),
             )
         assertEquals(expectedTokens, tokens)
     }
@@ -40,7 +41,7 @@ class LexerTest {
         try {
             lexer.tokenize(input)
         } catch (e: IllegalArgumentException) {
-            assertEquals("No matching token for input: @, in line: 0", e.message)
+            assertEquals("No matching token for input: @, in line 0 and column 1", e.message)
         }
     }
 }
