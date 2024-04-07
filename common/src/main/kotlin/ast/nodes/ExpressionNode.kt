@@ -17,7 +17,7 @@ sealed class ExpressionNode : Node() {
     @Serializable
     data class TypeNode(val token: Token) : ExpressionNode()
 
-    fun token(): Token{
+    fun token(): Token {
         return when (this) {
             is BinaryOperationNode -> token
             is LiteralNode -> token

@@ -27,7 +27,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         }
     }
 
-    private fun interpretPrintNode(node: StatementNode.PrintNode) :String{
+    private fun interpretPrintNode(node: StatementNode.PrintNode): String {
         return when (val printable = node.printable) {
             is ExpressionNode.LiteralNode -> {
                 printLiteral(printable)
@@ -46,7 +46,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         return node.token.value
     }
 
-    private fun printValueOfId(node: ExpressionNode.IdentifierNode):String {
+    private fun printValueOfId(node: ExpressionNode.IdentifierNode): String {
         val id = node.token.value
         if (variables.containsKey(id)) {
             return variables.getValue(id).value
@@ -55,7 +55,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         }
     }
 
-    private fun interpretDeclarationNode(node: StatementNode.DeclarationNode): Map<String,Literal> {
+    private fun interpretDeclarationNode(node: StatementNode.DeclarationNode): Map<String, Literal> {
         val id = node.variable.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {
@@ -84,7 +84,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     private fun identifierExpression(node: ExpressionNode.IdentifierNode): Literal {
         val id = node.token.value
         if (variables.containsKey(id)) {
-            return Literal(variables.getValue(id).value, variables.getValue(id).type,  MutableHelper.isMutable(node.token))
+            return Literal(variables.getValue(id).value, variables.getValue(id).type, MutableHelper.isMutable(node.token))
         } else {
             throw Exception("Variable $id not found")
         }
@@ -99,7 +99,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
                 evaluateAddition(left, right, node)
             }
             TokenType.OPERATOR_MINUS -> {
-                evaluateSubtraction(left, right,node)
+                evaluateSubtraction(left, right, node)
             }
             TokenType.OPERATOR_MULTIPLY -> {
                 evaluateMultiplication(left, right, node)
@@ -108,7 +108,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
                 evaluateDivision(left, right, node)
             }
             TokenType.LITERAL_NUMBER -> {
-                return Literal((node.token.value), node.token.type,MutableHelper.isMutable(node.token))
+                return Literal((node.token.value), node.token.type, MutableHelper.isMutable(node.token))
             }
             else -> throw Exception("Unknown operator")
         }
@@ -117,39 +117,43 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
     private fun evaluateAddition(
         left: Literal,
         right: Literal,
-        node: ExpressionNode
+        node: ExpressionNode,
     ): Literal {
         if (left.type == TokenType.LITERAL_NUMBER && right.type == TokenType.LITERAL_NUMBER) {
-            return Literal((left.value.toDouble() + right.value.toDouble()).toString(), TokenType.LITERAL_NUMBER, MutableHelper.isMutable(node.token()))
+            return Literal(
+                (left.value.toDouble() + right.value.toDouble()).toString(),
+                TokenType.LITERAL_NUMBER,
+                MutableHelper.isMutable(node.token()),
+            )
         }
-        return Literal((left.value + right.value), left.type,MutableHelper.isMutable(node.token()))
+        return Literal((left.value + right.value), left.type, MutableHelper.isMutable(node.token()))
     }
 
     private fun evaluateSubtraction(
         left: Literal,
         right: Literal,
-        node: ExpressionNode
+        node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.token()))
+        return Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
     }
 
     private fun evaluateMultiplication(
         left: Literal,
         right: Literal,
-        node: ExpressionNode
+        node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.token()))
+        return Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
     }
 
     private fun evaluateDivision(
         left: Literal,
         right: Literal,
-        node: ExpressionNode
+        node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type,MutableHelper.isMutable(node.token()))
+        return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
     }
 
-    private fun interpretAssignationNode(node: StatementNode.AssignationNode) : Map<String,Literal> {
+    private fun interpretAssignationNode(node: StatementNode.AssignationNode): Map<String, Literal> {
         val id = node.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {

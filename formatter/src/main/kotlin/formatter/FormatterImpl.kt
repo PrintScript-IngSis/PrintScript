@@ -8,7 +8,10 @@ import org.example.token.TokenType
 import java.io.File
 
 class FormatterImpl : Formatter {
-    override fun format(ast: ProgramNode,path : String): String {
+    override fun format(
+        ast: ProgramNode,
+        path: String,
+    ): String {
         return format(ast, File(path))
     }
 
@@ -82,7 +85,7 @@ class FormatterImpl : Formatter {
         node: StatementNode.AssignationNode,
         rules: FormattingRules,
     ): String {
-        var string = node.identifier.token .value
+        var string = node.identifier.token.value
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
