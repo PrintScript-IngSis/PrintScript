@@ -23,7 +23,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assert(errors.isEmpty())
     }
 
@@ -42,7 +42,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 1)
         assertEquals(errors[0].message, "Binary operation in println in line 0 and column 2")
     }
@@ -62,7 +62,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 1)
         assertEquals(errors[0].message, "Identifier Helloworld is not in camelCase format in line 0 and column 0")
     }
@@ -82,7 +82,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 0)
     }
 
@@ -95,7 +95,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 1)
         assertEquals(errors[0].message, "Identifier hello_world is not in camelCase format in line 0 and column 0")
     }
@@ -112,7 +112,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 1)
         assertEquals(errors[0].message, "Identifier HelloWorld is not in camelCase format in line 0 and column 0")
     }
@@ -129,8 +129,24 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast)
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules.json")
         assertEquals(errors.size, 1)
         assertEquals(errors[0].message, "Identifier HelloWorld is not in camelCase format in line 0 and column 0")
+    }
+
+    @Test
+    fun testLinterWithErrorInFormatIdSnake_case() {
+        val ast =
+            ProgramNode(
+                listOf(
+                    StatementNode.VariableNode(
+                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
+                        ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
+                    ),
+                ),
+            )
+        val linter = LinterImpl()
+        val errors = linter.checkErrors(ast, "src/test/resources/linterRules2.json")
+        assertEquals(errors.size, 0)
     }
 }

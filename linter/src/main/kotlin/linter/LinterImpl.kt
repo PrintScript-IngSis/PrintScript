@@ -9,8 +9,11 @@ import org.example.token.Token
 import java.io.File
 
 class LinterImpl : Linter {
-    override fun checkErrors(ast: ProgramNode): List<Error> {
-        return check(ast, File("src/main/resources/LinterRules.json"))
+    override fun checkErrors(
+        ast: ProgramNode,
+        path: String,
+    ): List<Error> {
+        return check(ast, File(path))
     }
 
     private fun check(
@@ -73,14 +76,14 @@ class LinterImpl : Linter {
         rules: LinterRules.LinterRules,
         errors: List<Error>,
     ): List<Error> {
-        val clonedErrors = errors.toList()
-        if (rules.idFormat == "camelCase") {
-            return clonedErrors + evaluateIfCamelCase(node.id)
-        }
-        if (rules.idFormat == "snake_case") {
-            return clonedErrors + evaluateIfSnakeCase(node.id)
-        }
-        return clonedErrors
+        val clonedErrors = errors.toMutableList()
+        clonedErrors +=
+            if (rules.idFormatCamelCase) {
+                evaluateIfCamelCase(node.id)
+            } else {
+                evaluateIfSnakeCase(node.id)
+            }
+        return clonedErrors.toList()
     }
 
     private fun evaluateIfCamelCase(node: Token): List<Error> {
@@ -100,7 +103,7 @@ class LinterImpl : Linter {
 
     private fun evaluateIfSnakeCase(node: Token): List<Error> {
         val error = listOf<Error>()
-        if (evaluateIfSnakeCase(node.value)) {
+        if (!evaluateIfSnakeCase(node.value)) {
             return error +
                 (
                     Error(
@@ -119,7 +122,7 @@ class LinterImpl : Linter {
     }
 
     private fun evaluateIfSnakeCase(id: String): Boolean {
-        return id.matches(Regex("(^[a-z]|[A-Z0-9])[a-z]*"))
+        return id.matches(Regex("\\b([a-z]+)_([a-z]+)+\\b"))
     }
 
     private fun evaluatePrintNode(

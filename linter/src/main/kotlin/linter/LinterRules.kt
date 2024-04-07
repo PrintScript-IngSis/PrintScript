@@ -2,7 +2,8 @@ package linter
 
 class LinterRules {
     data class LinterRules(
-        val idFormat: String,
+        val idFormatCamelCase: Boolean,
+        // true for camelCase, false for snake_case
         val operationInPrintln: Boolean,
     )
 
