@@ -15,15 +15,33 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         return variables
     }
 
-    override fun interpret() {
+    override fun interpret(): String {
         val statements = ast.getStatements()
-        for (statement in statements) {
-            when (statement) {
-                is StatementNode.PrintNode -> interpretPrintNode(statement)
-                is StatementNode.DeclarationNode -> variables = interpretDeclarationNode(statement)
-                is StatementNode.AssignationNode -> variables = interpretAssignationNode(statement)
-                is StatementNode.IfNode -> TODO()
-            }
+        var string = ""
+        for (statement in statements)
+            string += interpretStatementNode(statement)
+        return string
+    }
+
+    private fun interpretStatementNode(node: StatementNode): String {
+        var string = ""
+        when (node) {
+            is StatementNode.PrintNode -> string = interpretPrintNode(node)
+            is StatementNode.DeclarationNode -> interpretDeclarationNode(node)
+            is StatementNode.AssignationNode -> interpretAssignationNode(node)
+            is StatementNode.IfNode -> string = interpretIfNode(node).toString()
+        }
+        return string
+    }
+
+    private fun interpretIfNode(node: StatementNode.IfNode): String? {
+        val condition = node.condition
+        val trueStatement = node.trueStatementNode
+        val falseStatement = node.falseStatementNode
+        if (variables.getValue(condition.token.value).value == "true") {
+            return interpretStatementNode(trueStatement)
+        } else {
+            return falseStatement?.let { interpretStatementNode(it) }
         }
     }
 
@@ -55,7 +73,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         }
     }
 
-    private fun interpretDeclarationNode(node: StatementNode.DeclarationNode): Map<String, Literal> {
+    private fun interpretDeclarationNode(node: StatementNode.DeclarationNode) {
         val id = node.variable.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {
@@ -63,7 +81,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         }
         val map = variables.toMutableMap()
         map[id] = expression
-        return map.toMap()
+        variables = map.toMap()
     }
 
     private fun getExpression(node: Node): Literal {
@@ -153,7 +171,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
         return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
     }
 
-    private fun interpretAssignationNode(node: StatementNode.AssignationNode): Map<String, Literal> {
+    private fun interpretAssignationNode(node: StatementNode.AssignationNode) {
         val id = node.identifier.token.value
         val expression = getExpression(node.expression)
         if (variables.containsKey(id)) {
@@ -163,7 +181,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
             if (variables.getValue(id).isMutable) {
                 val map = variables.toMutableMap()
                 map[id] = expression
-                return map.toMap()
+                variables = map.toMap()
             } else {
                 throw Exception("Variable $id is not mutable")
             }

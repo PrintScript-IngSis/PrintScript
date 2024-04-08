@@ -21,7 +21,7 @@ class FormatterTest {
             )
         val formatter = FormatterImpl()
         val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
-        assertEquals("\n\nprintln(4);\n", formatted)
+        assertEquals("\n\nprintln(4.0);\n", formatted)
     }
 
     @Test
@@ -81,5 +81,42 @@ class FormatterTest {
         val formatter = FormatterImpl()
         val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
         assertEquals("x = 5 + 5;\n", formatted)
+    }
+
+    @Test
+    fun testFormatIfNode() {
+        val tokens =
+            ProgramNode(
+                listOf(
+                    StatementNode.IfNode(
+                        condition = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 4))),
+                        trueStatementNode =
+                            StatementNode.PrintNode(
+                                ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 15))),
+                            ),
+                        falseStatementNode =
+                            StatementNode.PrintNode(
+                                ExpressionNode.LiteralNode(
+                                    Token(TokenType.LITERAL_STRING, "Hello World", Position(0, 0)),
+                                ),
+                            ),
+                    ),
+                ),
+            )
+        val formatter = FormatterImpl()
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
+        assertEquals(
+            "if (x) {\n" +
+                "\n" +
+                "\n" +
+                "println(Hello, World!);\n" +
+                "}\n" +
+                "else {\n" +
+                "\n" +
+                "\n" +
+                "println(Hello World);\n" +
+                "}\n",
+            formatted,
+        )
     }
 }

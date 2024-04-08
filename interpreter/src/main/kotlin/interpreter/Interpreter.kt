@@ -1,5 +1,5 @@
 package org.example.interpreter
 
 interface Interpreter {
-    fun interpret()
+    fun interpret(): String
 }

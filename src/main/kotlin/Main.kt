@@ -2,6 +2,7 @@ package org.example
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.example.interpreter.InterpreterImpl
 import org.example.lexer.LexerImpl
 import org.example.lexer.stringDivider.StringDividerImpl
 import org.example.parser.ParserImpl
@@ -9,7 +10,7 @@ import org.example.parser.ParserImpl
 // TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val text = "let a:boolean = true; if(a){println(1);}else{println(2);};"
+    val text = "println(1)};"
     val strDiv = StringDividerImpl()
     val lexer = LexerImpl()
 
@@ -23,10 +24,13 @@ fun main() {
 
     val parser = ParserImpl(tokens)
     val ast = parser.parse()
-
-    println("AST: $ast")
     val astJson = Json.encodeToString(ast)
     println("AST JSON: $astJson")
+
+    println("AST: $ast")
+
+    val interpreter = InterpreterImpl(ast)
+    println(interpreter.interpret())
 }
 
 //    val parser = ParserImpl(tokens)
