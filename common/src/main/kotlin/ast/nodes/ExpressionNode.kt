@@ -18,7 +18,7 @@ sealed class ExpressionNode : Node() {
     data class TypeNode(val token: Token) : ExpressionNode()
 
     @Serializable
-    data class VariableNode(val identifier: ExpressionNode.IdentifierNode, val dataType: ExpressionNode.TypeNode) : ExpressionNode()
+    data class VariableNode(val identifier: IdentifierNode, val dataType: TypeNode) : ExpressionNode()
 
     fun token(): Token {
         return when (this) {

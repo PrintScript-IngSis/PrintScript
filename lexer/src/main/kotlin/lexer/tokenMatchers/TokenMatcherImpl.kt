@@ -27,7 +27,7 @@ class TokenMatcherImpl : TokenMatcher {
             Regex("\\(") to TokenType.PARENTHESIS_OPEN,
             Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
             Regex("\\{") to TokenType.BRACKET_OPEN,
-            Regex("\\}") to TokenType.BRACKET_CLOSE,
+            Regex("}") to TokenType.BRACKET_CLOSE,
         )
 
     override fun getToken(
