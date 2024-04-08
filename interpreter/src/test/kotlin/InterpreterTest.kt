@@ -1,10 +1,6 @@
 import kotlinx.serialization.json.Json
-import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.ProgramNode
-import org.example.factories.Position
 import org.example.interpreter.InterpreterImpl
-import org.example.token.Token
-import org.example.token.TokenType
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
@@ -154,18 +150,6 @@ class InterpreterTest {
             interpreter.interpret()
         } catch (e: Exception) {
             assertEquals("Variable y not found", e.message)
-        }
-    }
-
-    @Test
-    fun testInterpreterWhenRecievingAnInvalidNodeShouldThrowException() {
-        val ast = ProgramNode(listOf(ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0)))))
-        val interpreter = InterpreterImpl(ast)
-
-        try {
-            interpreter.interpret()
-        } catch (e: Exception) {
-            assertEquals("Unknown node type", e.message)
         }
     }
 

@@ -13,12 +13,12 @@ class TokenMatcherImpl : TokenMatcher {
             Regex("number") to TokenType.TYPE_NUMBER,
             Regex("boolean") to TokenType.TYPE_BOOLEAN,
             Regex("println") to TokenType.OPERATOR_PRINTLN,
+            Regex("true|false") to TokenType.LITERAL_BOOLEAN,
             Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
             Regex("=") to TokenType.ASSIGNATOR,
             Regex(":") to TokenType.COLON,
             Regex(";") to TokenType.SEMICOLON,
             Regex("[0-9]+") to TokenType.LITERAL_NUMBER,
-            Regex("true|false") to TokenType.LITERAL_BOOLEAN,
             Regex("""(['"]).*?\1""") to TokenType.LITERAL_STRING,
             Regex("\\+") to TokenType.OPERATOR_PLUS,
             Regex("-") to TokenType.OPERATOR_MINUS,
@@ -26,6 +26,8 @@ class TokenMatcherImpl : TokenMatcher {
             Regex("/") to TokenType.OPERATOR_DIVIDE,
             Regex("\\(") to TokenType.PARENTHESIS_OPEN,
             Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
+            Regex("\\{") to TokenType.BRACKET_OPEN,
+            Regex("\\}") to TokenType.BRACKET_CLOSE,
         )
 
     override fun getToken(

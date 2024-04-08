@@ -22,7 +22,7 @@ class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
                 is StatementNode.PrintNode -> interpretPrintNode(statement)
                 is StatementNode.DeclarationNode -> variables = interpretDeclarationNode(statement)
                 is StatementNode.AssignationNode -> variables = interpretAssignationNode(statement)
-                else -> throw Exception("Unknown node type")
+                is StatementNode.IfNode -> TODO()
             }
         }
     }

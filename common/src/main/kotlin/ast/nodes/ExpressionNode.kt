@@ -17,12 +17,16 @@ sealed class ExpressionNode : Node() {
     @Serializable
     data class TypeNode(val token: Token) : ExpressionNode()
 
+    @Serializable
+    data class VariableNode(val identifier: ExpressionNode.IdentifierNode, val dataType: ExpressionNode.TypeNode) : ExpressionNode()
+
     fun token(): Token {
         return when (this) {
             is BinaryOperationNode -> token
             is LiteralNode -> token
             is IdentifierNode -> token
             is TypeNode -> token
+            is VariableNode -> identifier.token
         }
     }
 }

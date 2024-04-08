@@ -31,7 +31,7 @@ class FormatterTest {
                 listOf(
                     StatementNode.DeclarationNode(
                         variable =
-                            StatementNode.VariableNode(
+                            ExpressionNode.VariableNode(
                                 identifier = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(2, 0))),
                                 dataType = ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(21, 0))),
                             ),

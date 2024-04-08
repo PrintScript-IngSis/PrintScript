@@ -22,4 +22,6 @@ enum class TokenType {
     OPERATOR_PRINTLN, // priority last
     PARENTHESIS_OPEN,
     PARENTHESIS_CLOSE,
+    BRACKET_OPEN,
+    BRACKET_CLOSE,
 }

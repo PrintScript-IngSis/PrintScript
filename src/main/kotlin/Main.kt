@@ -1,55 +1,32 @@
 package org.example
 
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.example.ast.nodes.ProgramNode
+import org.example.lexer.LexerImpl
+import org.example.lexer.stringDivider.StringDividerImpl
+import org.example.parser.ParserImpl
 
 // TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val astJson = """{
-  "statements":[
-      {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
-         "variable":{
-            "identifier":{
-               "id":{
-                  "type":"IDENTIFIER",
-                  "value":"x",
-                  "position":{
-                        "line":1,
-                        "column":4
-                    
-                  }
-               }
-            },
-            "dataType":{
-               "typeToken":{
-                  "type":"TYPE_NUMBER",
-                  "value":"number",
-                  "position":{
-                        "line":1,
-                        "column":6
-                  }
-               }
-            }
-         },
-         "expression":{
-            "type":"org.example.ast.nodes.ExpressionNode.LiteralNode",
-            "token":{
-               "type":"LITERAL_NUMBER",
-               "value":"5.0",
-               "position":{
-                        "line":1,
-                        "column":8
-               }
-            }
-         }
-      }
-   ]
-}"""
-    val ast = Json.decodeFromString<ProgramNode>(astJson)
+    val text = "let a:boolean = true; if(a){println(1);}else{println(2);};"
+    val strDiv = StringDividerImpl()
+    val lexer = LexerImpl()
+
+    val dividedString = strDiv.stringToList(text)
+
+    println("Divided string: $dividedString")
+
+    val tokens = lexer.tokenize(text)
+
+    println("Tokens: $tokens")
+
+    val parser = ParserImpl(tokens)
+    val ast = parser.parse()
 
     println("AST: $ast")
+    val astJson = Json.encodeToString(ast)
+    println("AST JSON: $astJson")
 }
 
 //    val parser = ParserImpl(tokens)
