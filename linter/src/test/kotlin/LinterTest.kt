@@ -23,7 +23,7 @@ class LinterTest {
                 ),
             )
         val linter = LinterImpl()
-        val errors = linter.checkErrors(ast, "src/test/resources/LinterRules.json")
+        val errors = linter.checkErrors(ast)
         assert(errors.isEmpty())
     }
 
