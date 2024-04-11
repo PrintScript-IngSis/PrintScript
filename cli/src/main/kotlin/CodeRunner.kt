@@ -11,7 +11,7 @@ import org.example.interpreter.InterpreterImpl
 import org.example.lexer.LexerImpl
 import org.example.parser.ParserImpl
 
-class CodeRunner : CliktCommand() {
+class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private val runOption by option("-r", "--run", help = "Run interpreter").flag()
     private val linterOption by option("-l", "--linter", help = "Run linter").flag()
     private val formatOption by option("-f", "--format", help = "Run formatter").flag()
@@ -26,6 +26,7 @@ class CodeRunner : CliktCommand() {
 
     override fun run() {
         try {
+            println(inputFile)
             inputFile.let { file ->
                 val input = file.readText()
                 val lexer = LexerImpl()
@@ -98,20 +99,4 @@ class CodeRunner : CliktCommand() {
     }
 }
 
-// DELETE THIS, THIS IS TEMPORARY
-val run = "-r"
-val format = "-f"
-val linter = "-l"
-val help = "-h"
-
-// not pushed - will delete
-val testFile =
-    "C:\\Users\\Usuario\\OneDrive\\Documentos\\Austral\\4to\\IngSis\\PrintScript2\\src\\main\\resources\\testFile.txt"
-val output =
-    "C:\\Users\\Usuario\\OneDrive\\Documentos\\Austral\\4to\\IngSis\\PrintScript2\\src\\main\\resources\\outputFile.txt"
-val customFormatterRules =
-    "--rules=C:\\Users\\Usuario\\OneDrive\\Documentos\\Austral\\4to\\IngSis\\PrintScript2\\src\\main\\resources\\customFormatterRules.json"
-val customLinterRules =
-    "--rules=C:\\Users\\Usuario\\OneDrive\\Documentos\\Austral\\4to\\IngSis\\PrintScript2\\src\\main\\resources\\customLinterRules.json"
-
-fun main(args: Array<String>) = CodeRunner().main(arrayOf(format, customFormatterRules, testFile, output))
+fun main(args: Array<String>) = CodeRunner().main(args)

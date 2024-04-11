@@ -1,5 +1,6 @@
 plugins {
     id("custom-plugin")
+    application
 }
 
 group = "org.example"
@@ -13,6 +14,10 @@ dependencies {
     interpreter()
     formatter()
     linter()
+}
+
+application {
+    mainClass = "CodeRunnerKt"
 }
 
 tasks.jar {
