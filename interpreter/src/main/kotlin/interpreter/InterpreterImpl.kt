@@ -8,14 +8,14 @@ import org.example.ast.nodes.StatementNode
 import org.example.factories.Literal
 import org.example.token.TokenType
 
-class InterpreterImpl(private val ast: ProgramNode) : Interpreter {
+class InterpreterImpl() : Interpreter {
     private var variables = mapOf<String, Literal>()
 
     fun getVariables(): Map<String, Literal> {
         return variables
     }
 
-    override fun interpret(): String {
+    override fun interpret(ast: ProgramNode): String {
         val statements = ast.getStatements()
         var string = ""
         for (statement in statements)
