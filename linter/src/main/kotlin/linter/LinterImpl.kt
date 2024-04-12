@@ -61,7 +61,7 @@ class LinterImpl : Linter {
             is StatementNode.AssignationNode -> {
                 return evaluateIdentifierNode(node.identifier, rules, errors)
             }
-            is StatementNode.VariableNode -> {
+            is ExpressionNode.VariableNode -> {
                 return evaluateIdentifierNode(node.identifier, rules, errors)
             }
             is StatementNode.DeclarationNode -> {
@@ -79,9 +79,9 @@ class LinterImpl : Linter {
         val clonedErrors = errors.toMutableList()
         clonedErrors +=
             if (rules.idFormatCamelCase) {
-                evaluateIfCamelCase(node.id)
+                evaluateIfCamelCase(node.token)
             } else {
-                evaluateIfSnakeCase(node.id)
+                evaluateIfSnakeCase(node.token)
             }
         return clonedErrors.toList()
     }
@@ -109,7 +109,7 @@ class LinterImpl : Linter {
                     Error(
                         "Identifier ${node.value} is not in snake_case format in line " +
                             "${node.position.line} and column " +
-                            "${node.position.column}\"",
+                            "${node.position.column}",
                     )
                 )
         }

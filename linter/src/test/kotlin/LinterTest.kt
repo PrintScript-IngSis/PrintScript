@@ -53,7 +53,7 @@ class LinterTest {
             ProgramNode(
                 listOf(
                     StatementNode.DeclarationNode(
-                        StatementNode.VariableNode(
+                        ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "Helloworld", Position(0, 0))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
                         ),
@@ -73,7 +73,7 @@ class LinterTest {
             ProgramNode(
                 listOf(
                     StatementNode.DeclarationNode(
-                        StatementNode.VariableNode(
+                        ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
                         ),
@@ -91,7 +91,10 @@ class LinterTest {
         val ast =
             ProgramNode(
                 listOf(
-                    ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
+                    StatementNode.AssignationNode(
+                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
+                        ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
+                    ),
                 ),
             )
         val linter = LinterImpl()
@@ -118,35 +121,22 @@ class LinterTest {
     }
 
     @Test
-    fun testLinterWithErrorInFormatIdVariableNode() {
+    fun testLinterWithErrorInSnake_caseFormatIdDeclarationNode() {
         val ast =
             ProgramNode(
                 listOf(
-                    StatementNode.VariableNode(
-                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "HelloWorld", Position(0, 0))),
-                        ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
-                    ),
-                ),
-            )
-        val linter = LinterImpl()
-        val errors = linter.checkErrors(ast, "src/test/resources/LinterRules.json")
-        assertEquals(errors.size, 1)
-        assertEquals(errors[0].message, "Identifier HelloWorld is not in camelCase format in line 0 and column 0")
-    }
-
-    @Test
-    fun testLinterWithErrorInFormatIdSnake_case() {
-        val ast =
-            ProgramNode(
-                listOf(
-                    StatementNode.VariableNode(
-                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
-                        ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
+                    StatementNode.DeclarationNode(
+                        ExpressionNode.VariableNode(
+                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
+                            ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
+                        ),
+                        ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
                     ),
                 ),
             )
         val linter = LinterImpl()
         val errors = linter.checkErrors(ast, "src/test/resources/LinterRules2.json")
-        assertEquals(errors.size, 0)
+        assertEquals(errors.size, 1)
+        assertEquals(errors[0].message, "Identifier helloWorld is not in snake_case format in line 0 and column 0")
     }
 }

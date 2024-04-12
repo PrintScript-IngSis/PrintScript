@@ -37,7 +37,7 @@ class StringDividerImpl : StringDivider {
                     }
                 }
                 withinQuotes -> currentToken.append(char)
-                char in setOf(':', ';', '=', '(', ')', '+', '*', '/', '-') -> {
+                char in setOf(':', ';', '=', '(', ')', '+', '*', '/', '-', '{', '}') -> {
                     if (currentToken.isNotEmpty()) {
                         tokens.add(currentToken.toString())
                         currentToken = StringBuilder()

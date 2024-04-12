@@ -2,14 +2,19 @@ package org.example.token
 
 enum class TokenType {
     KEYWORD_LET,
+    KEYWORD_CONST,
+    KEYWORD_IF,
+    KEYWORD_ELSE,
     IDENTIFIER,
     ASSIGNATOR, // =
     COLON,
     SEMICOLON,
     LITERAL_NUMBER,
     LITERAL_STRING,
+    LITERAL_BOOLEAN,
     TYPE_STRING, // let a:number = 5
     TYPE_NUMBER,
+    TYPE_BOOLEAN,
     OPERATOR_PLUS,
     OPERATOR_MINUS,
     OPERATOR_MULTIPLY, // priority 1
@@ -17,4 +22,6 @@ enum class TokenType {
     OPERATOR_PRINTLN, // priority last
     PARENTHESIS_OPEN,
     PARENTHESIS_CLOSE,
+    BRACKET_OPEN,
+    BRACKET_CLOSE,
 }

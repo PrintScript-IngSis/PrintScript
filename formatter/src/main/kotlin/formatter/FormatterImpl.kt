@@ -15,43 +15,73 @@ class FormatterImpl : Formatter {
         return format(ast, File(path))
     }
 
-    fun format(
+    private fun format(
         ast: ProgramNode,
         file: File,
     ): String {
         val json = file.readText()
-
         val gson = Gson()
         val rulesWrapper: FormattingRulesWrapper = gson.fromJson(json, FormattingRulesWrapper::class.java)
         val rules = rulesWrapper.rules
-
-        return evaluate(ast, rules)
+        var string = ""
+        for (statement in ast.getStatements()) {
+            string += formatStatements(statement, rules)
+        }
+        return string
     }
 
-    private fun evaluate(
-        ast: ProgramNode,
+    private fun formatStatements(
+        statement: StatementNode,
         rules: FormattingRules,
     ): String {
         var string = ""
-        for (statement in ast.getStatements()) {
-            string +=
-                when (statement) {
-                    is StatementNode.PrintNode -> {
-                        evaluatePrintNode(statement, rules)
-                    }
-
-                    is StatementNode.DeclarationNode -> {
-                        evaluateDeclarationNode(statement, rules)
-                    }
-
-                    is StatementNode.AssignationNode -> {
-                        evaluateAssignationNode(statement, rules)
-                    }
-
-                    else -> throw Exception("Unknown node type")
+        string +=
+            when (statement) {
+                is StatementNode.PrintNode -> {
+                    evaluatePrintNode(statement, rules)
                 }
+
+                is StatementNode.DeclarationNode -> {
+                    evaluateDeclarationNode(statement, rules)
+                }
+
+                is StatementNode.AssignationNode -> {
+                    evaluateAssignationNode(statement, rules)
+                }
+
+                is StatementNode.IfNode -> {
+                    evaluateIfNode(statement, rules)
+                }
+            }
+        return string
+    }
+
+    private fun evaluateIfNode(
+        node: StatementNode.IfNode,
+        rules: FormattingRules,
+    ): String {
+        var string = ""
+        string += "if ("
+        string += node.condition.token.value
+        string += ") {"
+        string += "\n"
+        string += numberOfSpacesInBlock(rules.numberSpacesInBlock)
+        string += formatStatements(node.trueStatementNode, rules)
+        string += "}"
+        string += "\n"
+        if (node.falseStatementNode != null) {
+            string += "else {"
+            string += "\n"
+            string += numberOfSpacesInBlock(rules.numberSpacesInBlock)
+            string += formatStatements(node.falseStatementNode!!, rules)
+            string += "}"
+            string += "\n"
         }
         return string
+    }
+
+    private fun numberOfSpacesInBlock(number: Int): String {
+        return " ".repeat(number)
     }
 
     private fun evaluatePrintNode(
@@ -72,10 +102,10 @@ class FormatterImpl : Formatter {
         rules: FormattingRules,
     ): String {
         var string = "let "
-        val id = node.variable.identifier.id.value
+        val id = node.variable.identifier.token.value
         string += id
         string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
-        string += type(node.variable.dataType.typeToken.type)
+        string += type(node.variable.dataType.token.type)
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
@@ -87,7 +117,7 @@ class FormatterImpl : Formatter {
         node: StatementNode.AssignationNode,
         rules: FormattingRules,
     ): String {
-        var string = node.identifier.id.value
+        var string = node.identifier.token.value
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
@@ -105,15 +135,19 @@ class FormatterImpl : Formatter {
             }
 
             is ExpressionNode.LiteralNode -> {
-                node.token.value.toDouble().toInt().toString()
+                if (node.token.type == TokenType.TYPE_NUMBER) {
+                    node.token.value.toDouble().toInt().toString()
+                } else {
+                    node.token.value
+                }
             }
 
             is ExpressionNode.IdentifierNode -> {
-                node.id.value
+                node.token.value
             }
 
             is ExpressionNode.TypeNode -> {
-                node.typeToken.value
+                node.token.value
             }
 
             else -> throw Exception("Unknown node type")
@@ -126,7 +160,7 @@ class FormatterImpl : Formatter {
     ): String {
         val left = evaluateExpressionNode(node.leftChild, rules)
         val right = evaluateExpressionNode(node.rightChild, rules)
-        val operation = node.value.value
+        val operation = node.token.value
         return "$left $operation $right"
     }
 
@@ -134,6 +168,7 @@ class FormatterImpl : Formatter {
         return when (type) {
             TokenType.TYPE_NUMBER -> "number"
             TokenType.TYPE_STRING -> "string"
+            TokenType.TYPE_BOOLEAN -> "boolean"
             else -> throw Exception("Unknown type")
         }
     }
