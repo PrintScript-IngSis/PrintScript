@@ -56,7 +56,7 @@ class OperationParser {
             if (!iterator.hasNext()) return null
             val token = iterator.next()
             return when (token.type) {
-                TokenType.LITERAL_NUMBER, TokenType.LITERAL_STRING -> ExpressionNode.LiteralNode(token)
+                TokenType.LITERAL_NUMBER, TokenType.LITERAL_STRING, TokenType.LITERAL_BOOLEAN -> ExpressionNode.LiteralNode(token)
                 TokenType.IDENTIFIER -> ExpressionNode.IdentifierNode(token)
                 TokenType.PARENTHESIS_OPEN -> {
                     val node = createComplexExpressionNode(iterator) ?: error("Expected expression inside brackets")

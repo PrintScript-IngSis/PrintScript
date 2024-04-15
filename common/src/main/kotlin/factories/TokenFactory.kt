@@ -15,6 +15,9 @@ class TokenFactory {
             if (type == TokenType.LITERAL_NUMBER) {
                 return Token(type, value.toDouble().toString(), position)
             }
+            if (type == TokenType.LITERAL_BOOLEAN) {
+                return Token(type, value.toBoolean().toString(), position)
+            }
             return Token(type, value, position)
         }
     }

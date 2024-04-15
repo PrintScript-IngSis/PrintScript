@@ -6,9 +6,14 @@ class TokenMatcherImpl : TokenMatcher {
     private val regexMap: Map<Regex, TokenType> =
         mapOf(
             Regex("let") to TokenType.KEYWORD_LET,
+            Regex("const") to TokenType.KEYWORD_CONST,
+            Regex("if") to TokenType.KEYWORD_IF,
+            Regex("else") to TokenType.KEYWORD_ELSE,
             Regex("string") to TokenType.TYPE_STRING,
             Regex("number") to TokenType.TYPE_NUMBER,
+            Regex("boolean") to TokenType.TYPE_BOOLEAN,
             Regex("println") to TokenType.OPERATOR_PRINTLN,
+            Regex("true|false") to TokenType.LITERAL_BOOLEAN,
             Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
             Regex("=") to TokenType.ASSIGNATOR,
             Regex(":") to TokenType.COLON,
@@ -21,6 +26,8 @@ class TokenMatcherImpl : TokenMatcher {
             Regex("/") to TokenType.OPERATOR_DIVIDE,
             Regex("\\(") to TokenType.PARENTHESIS_OPEN,
             Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
+            Regex("\\{") to TokenType.BRACKET_OPEN,
+            Regex("}") to TokenType.BRACKET_CLOSE,
         )
 
     override fun getToken(
