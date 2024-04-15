@@ -1,13 +1,14 @@
 plugins {
     id("custom-plugin")
+    id("publish-plugin")
     application
 }
 
 group = "org.example"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 dependencies {
-    implementation("com.github.ajalt:clikt:2.8.0")
+    implementation("com.github.ajalt.clikt:clikt:4.3.0")
     common()
     lexer()
     parser()

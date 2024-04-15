@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "idFormatCamelCase": false,
+    "operationInPrintln": true
+  }
+}

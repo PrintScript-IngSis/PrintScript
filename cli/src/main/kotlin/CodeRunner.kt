@@ -21,8 +21,8 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private val outputFile by argument(help = "Output file for formatter")
         .file(canBeDir = false, canBeFile = true).optional()
 
-    private val defaultFormatterRules = "cli/src/main/resources/DefaultFormatterRules.json"
-    private val defaultLinterRules = "cli/src/main/resources/DefaultLinterRules.json"
+    private val defaultFormatterRules = "/DefaultFormatterRules.json"
+    private val defaultLinterRules = "/DefaultLinterRules.json"
 
     override fun run() {
         try {
@@ -51,19 +51,23 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
 
     private fun runInterpreter(input: ProgramNode) {
         echo("Running file ${inputFile.name}... \n")
-        val interpreter = InterpreterImpl(input)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(input)
     }
 
     private fun runLinter(input: ProgramNode) {
         echo("Running linter on file ${inputFile.name}... \n")
         val linter = LinterImpl()
-        val rulesFile = rulesFileOption?.path ?: defaultLinterRules
+        val rulesFile =
+            rulesFileOption?.path ?: this::class.java.getResource(defaultLinterRules)?.path
+                ?: throw IllegalStateException("Default linter rules file not found")
         linter.checkErrors(input, rulesFile).forEach { echo(it.toString()) }
     }
 
     private fun runFormatter(input: ProgramNode) {
-        val rulesFile = rulesFileOption?.path ?: defaultFormatterRules
+        val rulesFile =
+            rulesFileOption?.path ?: this::class.java.getResource(defaultFormatterRules)?.path
+                ?: throw IllegalStateException("Default formatter rules file not found")
         val formattedText = formatFile(input, rulesFile)
         if (outputFile == null) {
             echo("Formatting file ${inputFile.name}... \n")
