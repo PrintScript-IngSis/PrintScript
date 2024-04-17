@@ -2,10 +2,7 @@ package org.example.parser
 
 import org.example.ast.nodes.ProgramNode
 import org.example.ast.nodes.StatementNode
-import org.example.parser.subparser.DeclarationParser
-import org.example.parser.subparser.IfParser
-import org.example.parser.subparser.PrintlnParser
-import org.example.parser.subparser.ReassignationParser
+import org.example.parser.subparser.*
 import org.example.token.Token
 import org.example.token.TokenType
 
@@ -23,7 +20,7 @@ class ParserImpl(private val tokens: List<Token>) : Parser {
         val firstToken = tokens[0]
         return when (firstToken.type) {
             TokenType.KEYWORD_LET, TokenType.KEYWORD_CONST -> startAssignationStatement(tokens) // skip Node
-            TokenType.OPERATOR_PRINTLN -> startPrintStatement(tokens) // skip Node
+            TokenType.KEYWORD_PRINTLN -> startPrintStatement(tokens) // skip Node
             TokenType.IDENTIFIER -> startReasignationStatement(tokens) // identifier Node
             TokenType.KEYWORD_IF -> startIfStatement(tokens) // if Node
             else -> throw Exception("Invalid statement")

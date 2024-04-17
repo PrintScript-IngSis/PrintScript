@@ -20,6 +20,12 @@ sealed class ExpressionNode : Node() {
     @Serializable
     data class VariableNode(val identifier: IdentifierNode, val dataType: TypeNode) : ExpressionNode()
 
+    @Serializable
+    data class InputNode(val token: Token) : ExpressionNode()
+
+    @Serializable
+    data class ReadEnvNode(val token: Token, val variable: IdentifierNode) : ExpressionNode()
+
     fun token(): Token {
         return when (this) {
             is BinaryOperationNode -> token
@@ -27,6 +33,8 @@ sealed class ExpressionNode : Node() {
             is IdentifierNode -> token
             is TypeNode -> token
             is VariableNode -> identifier.token
+            is InputNode -> token
+            is ReadEnvNode -> token
         }
     }
 }
