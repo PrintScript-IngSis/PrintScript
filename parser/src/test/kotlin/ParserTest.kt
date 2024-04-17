@@ -227,7 +227,7 @@ class ParserTest {
         try {
             parser.parse()
         } catch (e: Exception) {
-            assertEquals("Unexpected token: Token(type=PARENTHESIS_CLOSE, value=), position=12)", e.message)
+            assertEquals("Expected value after reassignment operator", e.message)
         }
     }
 

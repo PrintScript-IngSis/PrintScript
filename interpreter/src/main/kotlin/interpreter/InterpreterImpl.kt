@@ -48,7 +48,7 @@ class InterpreterImpl() : Interpreter {
     private fun interpretPrintNode(node: StatementNode.PrintNode): String {
         return when (val printable = node.printable) {
             is ExpressionNode.LiteralNode -> {
-                printLiteral(printable)
+                node.printable.token().value
             }
             is ExpressionNode.IdentifierNode -> {
                 printValueOfId(printable)
@@ -58,10 +58,6 @@ class InterpreterImpl() : Interpreter {
             }
             else -> throw Exception("Unknown node type")
         }
-    }
-
-    private fun printLiteral(node: ExpressionNode.LiteralNode): String {
-        return node.token.value
     }
 
     private fun printValueOfId(node: ExpressionNode.IdentifierNode): String {
@@ -74,9 +70,9 @@ class InterpreterImpl() : Interpreter {
     }
 
     private fun interpretDeclarationNode(node: StatementNode.DeclarationNode) {
-        val id : String
+        val id: String
         val expression: Literal
-        if(node.expression.token().type == TokenType.KEYWORD_READ_ENV){
+        if (node.expression.token().type == TokenType.KEYWORD_READ_ENV) {
             id = (node.expression as ExpressionNode.ReadEnvNode).variable.token.value
             if (variables.containsKey(id)) {
                 expression = variables.getValue(id)
@@ -86,7 +82,7 @@ class InterpreterImpl() : Interpreter {
             } else {
                 throw Exception("Variable $id not found")
             }
-        }else {
+        } else {
             id = node.variable.identifier.token.value
             if (variables.containsKey(id)) {
                 throw Exception("Variable $id already exists")
@@ -115,19 +111,7 @@ class InterpreterImpl() : Interpreter {
             is ExpressionNode.IdentifierNode -> {
                 identifierExpression(node)
             }
-            is ExpressionNode.ReadEnvNode -> {
-                readEnvExpression(node)
-            }
             else -> throw Exception("Unknown ${node::class.simpleName}\" type")
-        }
-    }
-
-    private fun readEnvExpression(node: ExpressionNode.ReadEnvNode): Literal {
-        val id = node.variable.token.value
-        if (variables.containsKey(id)) {
-            return Literal(variables.getValue(id).value, variables.getValue(id).type, MutableHelper.isMutable(node.token))
-        } else {
-            throw Exception("Variable $id not found")
         }
     }
 
