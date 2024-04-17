@@ -736,4 +736,66 @@ class InterpreterTest {
 
         assertEquals("1.0", interpreter.getVariables()["b"]?.value)
     }
+
+    @Test
+    fun testInterpreterWhenReadEnvWithVariableInitialized() {
+        val astJson =
+            """{"statements":[{"type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            |"variable":{"identifier":{"token":{"type":"IDENTIFIER","value":"x","position":{"line":0,"column":4}}},
+            |"dataType":{"token":{"type":"TYPE_NUMBER","value":"number","position":{"line":0,"column":6}}}},
+            |"expression":{"type":"org.example.ast.nodes.ExpressionNode.LiteralNode","token":{"type":"LITERAL_NUMBER",
+            |"value":"5.0","position":{"line":0,"column":15}}}},{"type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            |"variable":{"identifier":{"token":{"type":"IDENTIFIER","value":"value","position":{"line":0,"column":21}}},
+            |"dataType":{"token":{"type":"TYPE_NUMBER","value":"number","position":{"line":0,"column":27}}}},
+            |"expression":{"type":"org.example.ast.nodes.ExpressionNode.ReadEnvNode","token":{"type":"KEYWORD_READ_ENV",
+            |"value":"readEnv","position":{"line":0,"column":36}},"variable":{"token":{"type":"IDENTIFIER","value":"x",
+            |"position":{"line":0,"column":44}}}}}]}
+            """.trimMargin()
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
+
+        assertEquals("5.0", interpreter.getVariables()["value"]?.value)
+    }
+
+    @Test
+    fun testInterpreterWhenTryingToUseAVariableNotDeclared() {
+        val astJson = """{"statements":[{"type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            "variable":{"identifier":{"token":{"type":"IDENTIFIER","value":"x","position":{"line":0,"column":4}}},
+            "dataType":{"token":{"type":"TYPE_STRING","value":"string","position":{"line":0,"column":6}}}},
+            "expression":{"type":"org.example.ast.nodes.ExpressionNode.BinaryOperationNode",
+            "token":{"type":"OPERATOR_PLUS","value":"+","position":{"line":0,"column":17}},
+            "leftChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "token":{"type":"IDENTIFIER","value":"a","position":{"line":0,"column":15}}},
+            "rightChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "token":{"type":"IDENTIFIER","value":"r","position":{"line":0,"column":19}}}}}]}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+
+        try {
+            interpreter.interpret(ast)
+        } catch (e: Exception) {
+            assertEquals("Variable a not found", e.message)
+        }
+    }
+
+    @Test
+    fun testInterpreterWhenTryingToReadEnvOfAVariableNotDeclared() {
+        val astJson = """{"statements":[{"type":"org.example.ast.nodes.StatementNode.DeclarationNode","variable":
+            {"identifier":{"token":{"type":"IDENTIFIER","value":"x","position":{"line":0,"column":4}}},
+            "dataType":{"token":{"type":"TYPE_STRING","value":"string","position":{"line":0,"column":6}}}},
+            "expression":{"type":"org.example.ast.nodes.ExpressionNode.ReadEnvNode","token":{"type":"KEYWORD_READ_ENV",
+            "value":"readEnv","position":{"line":0,"column":15}},"variable":{"token":{"type":"IDENTIFIER","value":"a",
+            "position":{"line":0,"column":23}}}}}]}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+
+        try {
+            interpreter.interpret(ast)
+        } catch (e: Exception) {
+            assertEquals("Variable a not found", e.message)
+        }
+    }
 }

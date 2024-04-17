@@ -105,7 +105,7 @@ class ParserTest {
     fun testParserWhenGivenAnPrintlnStatementShouldBuildCorrectlyAst() {
         val tokens =
             listOf(
-                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 0)),
+                Token(TokenType.KEYWORD_PRINTLN, "println", Position(0, 0)),
                 Token(TokenType.PARENTHESIS_OPEN, "(", Position(0, 7)),
                 Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 8)),
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 22)),
@@ -179,7 +179,7 @@ class ParserTest {
     fun testParserWhenGivenAnIncorrectPrintStatementWithExtraStringShouldThrowException() {
         val tokens =
             listOf(
-                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 0)),
+                Token(TokenType.KEYWORD_PRINTLN, "println", Position(0, 0)),
                 Token(TokenType.PARENTHESIS_OPEN, "(", Position(0, 7)),
                 Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 8)),
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 22)),
@@ -200,7 +200,7 @@ class ParserTest {
     fun testParserWhenGivenAnIncorrectPrintStatementShouldThrowException() {
         val tokens =
             listOf(
-                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 0)),
+                Token(TokenType.KEYWORD_PRINTLN, "println", Position(0, 0)),
                 Token(TokenType.SEMICOLON, ";", Position(0, 24)),
             )
 
@@ -247,7 +247,7 @@ class ParserTest {
                 Token(TokenType.IDENTIFIER, "x", Position(0, 4)),
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 5)),
                 Token(TokenType.BRACKET_OPEN, "{", Position(0, 6)),
-                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 7)),
+                Token(TokenType.KEYWORD_PRINTLN, "println", Position(0, 7)),
                 Token(TokenType.PARENTHESIS_OPEN, "(", Position(0, 14)),
                 Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 15)),
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 29)),
@@ -255,7 +255,7 @@ class ParserTest {
                 Token(TokenType.BRACKET_CLOSE, "}", Position(0, 31)),
                 Token(TokenType.KEYWORD_ELSE, "else", Position(0, 0)),
                 Token(TokenType.BRACKET_OPEN, "{", Position(0, 0)),
-                Token(TokenType.OPERATOR_PRINTLN, "println", Position(0, 0)),
+                Token(TokenType.KEYWORD_PRINTLN, "println", Position(0, 0)),
                 Token(TokenType.PARENTHESIS_OPEN, "(", Position(0, 0)),
                 Token(TokenType.LITERAL_STRING, "Hello World", Position(0, 0)),
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 0)),

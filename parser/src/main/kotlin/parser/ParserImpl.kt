@@ -23,7 +23,7 @@ class ParserImpl(private val tokens: List<Token>) : Parser {
         val firstToken = tokens[0]
         return when (firstToken.type) {
             TokenType.KEYWORD_LET, TokenType.KEYWORD_CONST -> startAssignationStatement(tokens) // skip Node
-            TokenType.OPERATOR_PRINTLN -> startPrintStatement(tokens) // skip Node
+            TokenType.KEYWORD_PRINTLN -> startPrintStatement(tokens) // skip Node
             TokenType.IDENTIFIER -> startReasignationStatement(tokens) // identifier Node
             TokenType.KEYWORD_IF -> startIfStatement(tokens) // if Node
             else -> throw Exception("Invalid statement")
