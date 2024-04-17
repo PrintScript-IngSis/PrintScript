@@ -39,8 +39,8 @@ class InterpreterTest {
    ]
 }"""
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("5.0", interpreter.getVariables()["x"]?.value)
     }
@@ -80,8 +80,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         val astJson2 = """{
    "statements":[
@@ -116,10 +116,10 @@ class InterpreterTest {
 }
 """
         val ast2 = Json.decodeFromString<ProgramNode>(astJson2)
-        val interpreter2 = InterpreterImpl(ast2)
+        val interpreter2 = InterpreterImpl()
 
         try {
-            interpreter2.interpret()
+            interpreter2.interpret(ast2)
         } catch (e: Exception) {
             assertEquals("Variable x already exists", e.message)
         }
@@ -144,10 +144,10 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
+        val interpreter = InterpreterImpl()
 
         try {
-            interpreter.interpret()
+            interpreter.interpret(ast)
         } catch (e: Exception) {
             assertEquals("Variable y not found", e.message)
         }
@@ -204,8 +204,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("10.0", interpreter.getVariables()["x"]?.value)
     }
@@ -272,8 +272,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("5.0", interpreter.getVariables()["y"]?.value)
     }
@@ -358,8 +358,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("5.0", interpreter.getVariables()["y"]?.value)
     }
@@ -415,8 +415,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("0.0", interpreter.getVariables()["x"]?.value)
     }
@@ -472,8 +472,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("25.0", interpreter.getVariables()["x"]?.value)
     }
@@ -529,8 +529,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("1.0", interpreter.getVariables()["x"]?.value)
     }
@@ -561,10 +561,10 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
+        val interpreter = InterpreterImpl()
 
         try {
-            interpreter.interpret()
+            interpreter.interpret(ast)
         } catch (e: Exception) {
             assertEquals("Variable x not found", e.message)
         }
@@ -623,10 +623,10 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
+        val interpreter = InterpreterImpl()
 
         try {
-            interpreter.interpret()
+            interpreter.interpret(ast)
         } catch (e: Exception) {
             assertEquals("Type mismatch", e.message)
         }
@@ -731,8 +731,8 @@ class InterpreterTest {
 }
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
-        val interpreter = InterpreterImpl(ast)
-        val result = interpreter.interpret()
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
 
         assertEquals("1.0", interpreter.getVariables()["b"]?.value)
     }
