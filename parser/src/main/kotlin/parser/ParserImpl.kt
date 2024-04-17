@@ -2,7 +2,10 @@ package org.example.parser
 
 import org.example.ast.nodes.ProgramNode
 import org.example.ast.nodes.StatementNode
-import org.example.parser.subparser.*
+import org.example.parser.subparser.DeclarationParser
+import org.example.parser.subparser.IfParser
+import org.example.parser.subparser.PrintlnParser
+import org.example.parser.subparser.ReassignationParser
 import org.example.token.Token
 import org.example.token.TokenType
 
