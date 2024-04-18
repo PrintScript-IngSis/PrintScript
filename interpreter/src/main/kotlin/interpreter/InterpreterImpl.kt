@@ -18,8 +18,16 @@ class InterpreterImpl() : Interpreter {
     override fun interpret(ast: ProgramNode): String {
         val statements = ast.getStatements()
         var string = ""
-        for (statement in statements)
-            string += "\n" + interpretStatementNode(statement)
+        var newString: String
+        for (statement in statements) {
+            newString = interpretStatementNode(statement)
+            if (newString != "") {
+                if (string.isNotEmpty()) {
+                    string += "\n"
+                }
+                string += newString
+            }
+        }
         return string
     }
 
