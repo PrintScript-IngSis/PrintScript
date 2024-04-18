@@ -8,7 +8,10 @@ sealed class StatementNode : Node() {
     data class AssignationNode(val identifier: ExpressionNode.IdentifierNode, val expression: ExpressionNode) : StatementNode()
 
     @Serializable
-    data class DeclarationNode(val variable: ExpressionNode.VariableNode, val expression: ExpressionNode) : StatementNode()
+    data class DeclarationAndAssignationNode(val variable: ExpressionNode.VariableNode, val expression: ExpressionNode) : StatementNode()
+
+    @Serializable
+    data class DeclarationNode(val variable: ExpressionNode.VariableNode) : StatementNode()
 
     @Serializable
     data class IfNode(

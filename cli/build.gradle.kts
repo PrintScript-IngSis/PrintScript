@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.example"
-version = "1.0.0"
+version = "1.1"
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:4.3.0")
@@ -19,6 +19,10 @@ dependencies {
 
 application {
     mainClass = "CodeRunnerKt"
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
 
 tasks.jar {

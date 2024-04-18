@@ -29,7 +29,7 @@ class FormatterTest {
         val tokens =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         variable =
                             ExpressionNode.VariableNode(
                                 identifier = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(2, 0))),
