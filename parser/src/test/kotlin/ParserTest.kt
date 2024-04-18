@@ -261,7 +261,6 @@ class ParserTest {
                 Token(TokenType.PARENTHESIS_CLOSE, ")", Position(0, 0)),
                 Token(TokenType.SEMICOLON, ";", Position(0, 0)),
                 Token(TokenType.BRACKET_CLOSE, "}", Position(0, 0)),
-                Token(TokenType.SEMICOLON, ";", Position(0, 0)),
             )
 
         val parser: Parser = ParserImpl(tokens)
