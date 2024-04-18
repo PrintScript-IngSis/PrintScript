@@ -12,7 +12,7 @@ class LexerTest {
 
     @BeforeEach
     fun setUp() {
-        lexer = LexerImpl()
+        lexer = LexerImpl("1.1")
     }
 
     @Test
