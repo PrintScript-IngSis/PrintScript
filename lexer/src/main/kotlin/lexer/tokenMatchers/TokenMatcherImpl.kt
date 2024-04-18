@@ -21,6 +21,8 @@ class TokenMatcherImpl(version: String) : TokenMatcher {
                 Regex("-") to TokenType.OPERATOR_MINUS,
                 Regex("\\*") to TokenType.OPERATOR_MULTIPLY,
                 Regex("/") to TokenType.OPERATOR_DIVIDE,
+                Regex("\\(") to TokenType.PARENTHESIS_OPEN,
+                Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
             )
 
         val version11Map: Map<Regex, TokenType> =
