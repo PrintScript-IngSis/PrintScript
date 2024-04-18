@@ -68,15 +68,26 @@ class ParserImpl(private val tokens: List<Token>) : Parser {
     private fun separateStatements(tokens: List<Token>): List<List<Token>> {
         val newList = mutableListOf<List<Token>>()
         var accumulated = mutableListOf<Token>()
-        var bracketCounter = 0
+        var bracketCounterIf = 0
+        var foundElse = false
         for (token in tokens) {
             if (token.type == TokenType.BRACKET_OPEN) {
-                bracketCounter++
+                bracketCounterIf++
                 accumulated.add(token)
             } else if (token.type == TokenType.BRACKET_CLOSE) {
-                bracketCounter--
+                bracketCounterIf--
                 accumulated.add(token)
-            } else if (token.type == TokenType.SEMICOLON && bracketCounter == 0) {
+                if (bracketCounterIf == 0) {
+                    if (foundElse) {
+                        newList.add(accumulated)
+                        accumulated = mutableListOf()
+                        foundElse = false
+                    } else {
+                        // should check if there is a following else statement here (keep going if it is the case, otherwise add to the list)
+                        foundElse = true
+                    }
+                }
+            } else if (token.type == TokenType.SEMICOLON && bracketCounterIf == 0) {
                 newList.add(accumulated)
                 accumulated = mutableListOf()
             } else {
