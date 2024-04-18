@@ -41,8 +41,8 @@ class FormatterImpl : Formatter {
                     evaluatePrintNode(statement, rules)
                 }
 
-                is StatementNode.DeclarationNode -> {
-                    evaluateDeclarationNode(statement, rules)
+                is StatementNode.DeclarationAndAssignationNode -> {
+                    evaluateDeclarationAndAssignationNode(statement, rules)
                 }
 
                 is StatementNode.AssignationNode -> {
@@ -52,7 +52,24 @@ class FormatterImpl : Formatter {
                 is StatementNode.IfNode -> {
                     evaluateIfNode(statement, rules)
                 }
+                is StatementNode.DeclarationNode -> {
+                    evaluateDeclarationNode(statement, rules)
+                }
             }
+        return string
+    }
+
+    private fun evaluateDeclarationNode(
+        node: StatementNode.DeclarationNode,
+        rules: FormattingRules,
+    ): String {
+        var string = "let "
+        val id = node.variable.identifier.token.value
+        string += id
+        string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
+        string += type(node.variable.dataType.token.type)
+        string += ";"
+        string += "\n"
         return string
     }
 
@@ -97,8 +114,8 @@ class FormatterImpl : Formatter {
         return string
     }
 
-    private fun evaluateDeclarationNode(
-        node: StatementNode.DeclarationNode,
+    private fun evaluateDeclarationAndAssignationNode(
+        node: StatementNode.DeclarationAndAssignationNode,
         rules: FormattingRules,
     ): String {
         var string = "let "

@@ -28,7 +28,7 @@ class ParserTest {
         val expectedAST =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(0, 21))),
@@ -270,7 +270,7 @@ class ParserTest {
         val expectedAST =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_BOOLEAN, "boolean", Position(0, 21))),
@@ -289,6 +289,32 @@ class ParserTest {
                                     Token(TokenType.LITERAL_STRING, "Hello World", Position(0, 0)),
                                 ),
                             ),
+                    ),
+                ),
+            )
+        assertEquals(expectedAST, ast)
+    }
+
+    @Test
+    fun testParserWhenDeclaring() {
+        val tokens =
+            listOf(
+                Token(TokenType.KEYWORD_LET, "let", Position(0, 0)),
+                Token(TokenType.IDENTIFIER, "x", Position(0, 2)),
+                Token(TokenType.COLON, ":", Position(0, 4)),
+                Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
+                Token(TokenType.SEMICOLON, ";", Position(0, 12)),
+            )
+        val parser: Parser = ParserImpl(tokens)
+        val ast = parser.parse()
+        val expectedAST =
+            ProgramNode(
+                listOf(
+                    StatementNode.DeclarationNode(
+                        ExpressionNode.VariableNode(
+                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
+                            ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(0, 21))),
+                        ),
                     ),
                 ),
             )
