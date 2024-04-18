@@ -3,4 +3,4 @@ plugins {
     id("publish-plugin")
 }
 
-version = "1.1"
+version = "1.1.0-SNAPSHOT"

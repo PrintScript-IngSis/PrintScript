@@ -2,35 +2,64 @@ package org.example.lexer.tokenMatchers
 import org.example.factories.Position
 import org.example.token.TokenType
 
-class TokenMatcherImpl : TokenMatcher {
+class TokenMatcherImpl(version: String) : TokenMatcher {
+    companion object {
+        val version10Map: Map<Regex, TokenType> =
+            mapOf(
+                Regex("let") to TokenType.KEYWORD_LET,
+                Regex("string") to TokenType.TYPE_STRING,
+                Regex("number") to TokenType.TYPE_NUMBER,
+                Regex("println") to TokenType.KEYWORD_PRINTLN,
+                Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
+                Regex("=") to TokenType.ASSIGNATOR,
+                Regex(":") to TokenType.COLON,
+                Regex(";") to TokenType.SEMICOLON,
+                Regex("[0-9]+(?:\\.[0-9]+)?") to TokenType.LITERAL_NUMBER,
+                Regex("""(['"]).*?\1""") to TokenType.LITERAL_STRING,
+                Regex("\\+") to TokenType.OPERATOR_PLUS,
+                Regex("-") to TokenType.OPERATOR_MINUS,
+                Regex("\\*") to TokenType.OPERATOR_MULTIPLY,
+                Regex("/") to TokenType.OPERATOR_DIVIDE,
+                Regex("\\(") to TokenType.PARENTHESIS_OPEN,
+                Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
+            )
+
+        val version11Map: Map<Regex, TokenType> =
+            mapOf(
+                Regex("let") to TokenType.KEYWORD_LET,
+                Regex("const") to TokenType.KEYWORD_CONST,
+                Regex("if") to TokenType.KEYWORD_IF,
+                Regex("else") to TokenType.KEYWORD_ELSE,
+                Regex("string") to TokenType.TYPE_STRING,
+                Regex("number") to TokenType.TYPE_NUMBER,
+                Regex("boolean") to TokenType.TYPE_BOOLEAN,
+                Regex("println") to TokenType.KEYWORD_PRINTLN,
+                Regex("readInput") to TokenType.KEYWORD_READ_INPUT,
+                Regex("readEnv") to TokenType.KEYWORD_READ_ENV,
+                Regex("true|false") to TokenType.LITERAL_BOOLEAN,
+                Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
+                Regex("=") to TokenType.ASSIGNATOR,
+                Regex(":") to TokenType.COLON,
+                Regex(";") to TokenType.SEMICOLON,
+                Regex("[0-9]+(?:\\.[0-9]+)?") to TokenType.LITERAL_NUMBER,
+                Regex("""(['"]).*?\1""") to TokenType.LITERAL_STRING,
+                Regex("\\+") to TokenType.OPERATOR_PLUS,
+                Regex("-") to TokenType.OPERATOR_MINUS,
+                Regex("\\*") to TokenType.OPERATOR_MULTIPLY,
+                Regex("/") to TokenType.OPERATOR_DIVIDE,
+                Regex("\\(") to TokenType.PARENTHESIS_OPEN,
+                Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
+                Regex("\\{") to TokenType.BRACKET_OPEN,
+                Regex("}") to TokenType.BRACKET_CLOSE,
+            )
+    }
+
     private val regexMap: Map<Regex, TokenType> =
-        mapOf(
-            Regex("let") to TokenType.KEYWORD_LET,
-            Regex("const") to TokenType.KEYWORD_CONST,
-            Regex("if") to TokenType.KEYWORD_IF,
-            Regex("else") to TokenType.KEYWORD_ELSE,
-            Regex("string") to TokenType.TYPE_STRING,
-            Regex("number") to TokenType.TYPE_NUMBER,
-            Regex("boolean") to TokenType.TYPE_BOOLEAN,
-            Regex("println") to TokenType.KEYWORD_PRINTLN,
-            Regex("readInput") to TokenType.KEYWORD_READ_INPUT,
-            Regex("readEnv") to TokenType.KEYWORD_READ_ENV,
-            Regex("true|false") to TokenType.LITERAL_BOOLEAN,
-            Regex("[a-zA-Z][a-zA-Z0-9_]*") to TokenType.IDENTIFIER,
-            Regex("=") to TokenType.ASSIGNATOR,
-            Regex(":") to TokenType.COLON,
-            Regex(";") to TokenType.SEMICOLON,
-            Regex("[0-9]+") to TokenType.LITERAL_NUMBER,
-            Regex("""(['"]).*?\1""") to TokenType.LITERAL_STRING,
-            Regex("\\+") to TokenType.OPERATOR_PLUS,
-            Regex("-") to TokenType.OPERATOR_MINUS,
-            Regex("\\*") to TokenType.OPERATOR_MULTIPLY,
-            Regex("/") to TokenType.OPERATOR_DIVIDE,
-            Regex("\\(") to TokenType.PARENTHESIS_OPEN,
-            Regex("\\)") to TokenType.PARENTHESIS_CLOSE,
-            Regex("\\{") to TokenType.BRACKET_OPEN,
-            Regex("}") to TokenType.BRACKET_CLOSE,
-        )
+        when (version) {
+            "1.0" -> version10Map
+            "1.1" -> version11Map
+            else -> throw IllegalArgumentException("Version $version not supported")
+        }
 
     override fun getToken(
         input: String,

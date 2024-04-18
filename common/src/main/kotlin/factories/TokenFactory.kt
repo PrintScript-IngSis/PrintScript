@@ -13,7 +13,7 @@ class TokenFactory {
                 return Token(type, value.substring(1, value.length - 1), position)
             }
             if (type == TokenType.LITERAL_NUMBER) {
-                return Token(type, value.toDouble().toString(), position)
+                return Token(type, value, position)
             }
             if (type == TokenType.LITERAL_BOOLEAN) {
                 return Token(type, value.toBoolean().toString(), position)

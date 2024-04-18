@@ -794,7 +794,7 @@ class InterpreterTest {
 """
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl()
-        val result = interpreter.interpret(ast)
+        interpreter.interpret(ast)
         assertEquals(TokenType.LITERAL_NUMBER, interpreter.getVariables()["x"]?.type)
     }
 
