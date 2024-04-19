@@ -19,9 +19,11 @@ enum class TokenType {
     OPERATOR_MINUS,
     OPERATOR_MULTIPLY, // priority 1
     OPERATOR_DIVIDE, // priority 1
-    OPERATOR_PRINTLN, // priority last
+    KEYWORD_PRINTLN, // priority last
     PARENTHESIS_OPEN,
     PARENTHESIS_CLOSE,
     BRACKET_OPEN,
     BRACKET_CLOSE,
+    KEYWORD_READ_INPUT,
+    KEYWORD_READ_ENV,
 }

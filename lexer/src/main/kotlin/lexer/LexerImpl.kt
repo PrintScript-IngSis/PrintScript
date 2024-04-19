@@ -6,8 +6,8 @@ import org.example.lexer.stringDivider.StringDividerImpl
 import org.example.lexer.tokenMatchers.TokenMatcherImpl
 import org.example.token.Token
 
-class LexerImpl() : Lexer {
-    private val tokenMatcher = TokenMatcherImpl()
+class LexerImpl(version: String) : Lexer {
+    private val tokenMatcher = TokenMatcherImpl(version)
     private val stringDivider = StringDividerImpl()
 
     override fun tokenize(input: String): List<Token> {

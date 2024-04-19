@@ -29,7 +29,7 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
             println(inputFile)
             inputFile.let { file ->
                 val input = file.readText()
-                val lexer = LexerImpl()
+                val lexer = LexerImpl("1.1")
                 val tokens = lexer.tokenize(input)
                 val parser = ParserImpl(tokens)
                 val ast = parser.parse()
@@ -52,7 +52,7 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private fun runInterpreter(input: ProgramNode) {
         echo("Running file ${inputFile.name}... \n")
         val interpreter = InterpreterImpl()
-        interpreter.interpret(input)
+        println(interpreter.interpret(input))
     }
 
     private fun runLinter(input: ProgramNode) {

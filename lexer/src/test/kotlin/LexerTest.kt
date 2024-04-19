@@ -12,7 +12,7 @@ class LexerTest {
 
     @BeforeEach
     fun setUp() {
-        lexer = LexerImpl()
+        lexer = LexerImpl("1.1")
     }
 
     @Test
@@ -28,7 +28,7 @@ class LexerTest {
                 Token(TokenType.COLON, ":", Position(0, 6)),
                 Token(TokenType.TYPE_NUMBER, "number", Position(0, 8)),
                 Token(TokenType.ASSIGNATOR, "=", Position(0, 15)),
-                Token(TokenType.LITERAL_NUMBER, "5.0", Position(0, 17)),
+                Token(TokenType.LITERAL_NUMBER, "5", Position(0, 17)),
                 Token(TokenType.SEMICOLON, ";", Position(0, 18)),
             )
         assertEquals(expectedTokens, tokens)

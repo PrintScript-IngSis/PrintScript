@@ -1,6 +1,7 @@
 import kotlinx.serialization.json.Json
 import org.example.ast.nodes.ProgramNode
 import org.example.interpreter.InterpreterImpl
+import org.example.token.TokenType
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
@@ -10,7 +11,7 @@ class InterpreterTest {
         val astJson = """{
   "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -50,7 +51,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -86,7 +87,7 @@ class InterpreterTest {
         val astJson2 = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -158,7 +159,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -215,7 +216,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -242,7 +243,7 @@ class InterpreterTest {
          }
       },
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -283,7 +284,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -310,7 +311,7 @@ class InterpreterTest {
          }
       },
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -369,7 +370,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -426,7 +427,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -483,7 +484,7 @@ class InterpreterTest {
         val astJson = """{
    "statements":[
       {
-         "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+         "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
          "variable":{
             "identifier":{
                "token":{
@@ -575,7 +576,7 @@ class InterpreterTest {
         val astJson = """{
     "statements":[
         {
-            "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
             "variable":{
                 "identifier":{
                     "token":{
@@ -637,7 +638,7 @@ class InterpreterTest {
         val astJson = """{
     "statements":[
         {
-            "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+            "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
             "variable":{
                 "identifier":{
                     "token":{
@@ -673,7 +674,7 @@ class InterpreterTest {
                 }
             },
             "trueStatementNode":{
-                "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+                "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
                 "variable":{
                     "identifier":{
                         "token":{
@@ -700,7 +701,7 @@ class InterpreterTest {
                 }
             },
             "falseStatementNode":{
-                "type":"org.example.ast.nodes.StatementNode.DeclarationNode",
+                "type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
                 "variable":{
                     "identifier":{
                         "token":{
@@ -735,5 +736,268 @@ class InterpreterTest {
         interpreter.interpret(ast)
 
         assertEquals("1.0", interpreter.getVariables()["b"]?.value)
+    }
+
+    @Test
+    fun testInterpreterWhenTryingToUseAVariableNotDeclared() {
+        val astJson = """{"statements":[{"type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
+            "variable":{"identifier":{"token":{"type":"IDENTIFIER","value":"x","position":{"line":0,"column":4}}},
+            "dataType":{"token":{"type":"TYPE_STRING","value":"string","position":{"line":0,"column":6}}}},
+            "expression":{"type":"org.example.ast.nodes.ExpressionNode.BinaryOperationNode",
+            "token":{"type":"OPERATOR_PLUS","value":"+","position":{"line":0,"column":17}},
+            "leftChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "token":{"type":"IDENTIFIER","value":"a","position":{"line":0,"column":15}}},
+            "rightChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "token":{"type":"IDENTIFIER","value":"r","position":{"line":0,"column":19}}}}}]}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+
+        try {
+            interpreter.interpret(ast)
+        } catch (e: Exception) {
+            assertEquals("Variable a not found", e.message)
+        }
+    }
+
+    @Test
+    fun testInterpreterWhenDeclaringAVariable() {
+        val astJson = """ {
+  "statements": [
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "x",
+            "position": {
+              "line": 0,
+              "column": 4
+            }
+          }
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_NUMBER",
+            "value": "number",
+            "position": {
+              "line": 0,
+              "column": 6
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
+        assertEquals(TokenType.LITERAL_NUMBER, interpreter.getVariables()["x"]?.type)
+    }
+
+    @Test
+    fun testInterpreterWhenDeclaringAAlreadyExistingVariable() {
+        val astJson = """{
+  "statements": [
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "x",
+            "position": {
+              "line": 0,
+              "column": 4
+            }
+          }
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_NUMBER",
+            "value": "number",
+            "position": {
+              "line": 0,
+              "column": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "x",
+            "position": {
+              "line": 0,
+              "column": 18
+            }
+          }
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_STRING",
+            "value": "string",
+            "position": {
+              "line": 0,
+              "column": 20
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+
+        try {
+            interpreter.interpret(ast)
+        } catch (e: Exception) {
+            assertEquals("Variable x already exists", e.message)
+        }
+    }
+
+    @Test
+    fun testInterpreterElseStatement() {
+        val astJson = """{
+  "statements": [
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "a",
+            "position": {
+              "line": 0,
+              "column": 4
+            }
+          }
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_NUMBER",
+            "value": "number",
+            "position": {
+              "line": 0,
+              "column": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "x",
+            "position": {
+              "line": 0,
+              "column": 17
+            }
+          }
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_BOOLEAN",
+            "value": "boolean",
+            "position": {
+              "line": 0,
+              "column": 19
+            }
+          }
+        }
+      },
+      "expression": {
+        "type": "org.example.ast.nodes.ExpressionNode.LiteralNode",
+        "token": {
+          "type": "LITERAL_BOOLEAN",
+          "value": "false",
+          "position": {
+            "line": 0,
+            "column": 29
+          }
+        }
+      }
+    },
+    {
+      "type": "org.example.ast.nodes.StatementNode.IfNode",
+      "condition": {
+        "token": {
+          "type": "IDENTIFIER",
+          "value": "x",
+          "position": {
+            "line": 0,
+            "column": 38
+          }
+        }
+      },
+      "trueStatementNode": {
+        "type": "org.example.ast.nodes.StatementNode.AssignationNode",
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "a",
+            "position": {
+              "line": 0,
+              "column": 41
+            }
+          }
+        },
+        "expression": {
+          "type": "org.example.ast.nodes.ExpressionNode.LiteralNode",
+          "token": {
+            "type": "LITERAL_NUMBER",
+            "value": "5.0",
+            "position": {
+              "line": 0,
+              "column": 43
+            }
+          }
+        }
+      },
+      "falseStatementNode": {
+        "type": "org.example.ast.nodes.StatementNode.AssignationNode",
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "a",
+            "position": {
+              "line": 0,
+              "column": 51
+            }
+          }
+        },
+        "expression": {
+          "type": "org.example.ast.nodes.ExpressionNode.LiteralNode",
+          "token": {
+            "type": "LITERAL_NUMBER",
+            "value": "10.0",
+            "position": {
+              "line": 0,
+              "column": 53
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+"""
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast)
+
+        assertEquals("10.0", interpreter.getVariables()["a"]?.value)
     }
 }

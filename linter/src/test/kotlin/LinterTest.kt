@@ -52,7 +52,7 @@ class LinterTest {
         val ast =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "Helloworld", Position(0, 0))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
@@ -72,7 +72,7 @@ class LinterTest {
         val ast =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
@@ -125,7 +125,7 @@ class LinterTest {
         val ast =
             ProgramNode(
                 listOf(
-                    StatementNode.DeclarationNode(
+                    StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
                             ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),

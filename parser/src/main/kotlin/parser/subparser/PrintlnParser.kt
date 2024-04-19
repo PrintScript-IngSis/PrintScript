@@ -10,7 +10,7 @@ class PrintlnParser(private val tokens: List<Token>) : Parser {
     override fun parse(): StatementNode {
         val valueNode =
             OperationParser.createValueNode(
-                OperationCropper.crop(tokens, TokenType.OPERATOR_PRINTLN).listIterator(),
+                OperationCropper.crop(tokens, TokenType.KEYWORD_PRINTLN).listIterator(),
             )
                 ?: throw Exception("Expected value after print operator")
         return StatementNode.PrintNode(valueNode)
