@@ -1,6 +1,7 @@
 import kotlinx.serialization.json.Json
 import org.example.ast.nodes.ProgramNode
 import org.example.interpreter.InterpreterImpl
+import org.example.token.TokenType
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
@@ -418,7 +419,7 @@ class InterpreterTest {
         val interpreter = InterpreterImpl()
         interpreter.interpret(ast)
 
-        assertEquals("0.0", interpreter.getVariables()["x"]?.value)
+        assertEquals("0", interpreter.getVariables()["x"]?.value)
     }
 
     @Test
@@ -475,7 +476,7 @@ class InterpreterTest {
         val interpreter = InterpreterImpl()
         interpreter.interpret(ast)
 
-        assertEquals("25.0", interpreter.getVariables()["x"]?.value)
+        assertEquals("25", interpreter.getVariables()["x"]?.value)
     }
 
     @Test
@@ -532,7 +533,7 @@ class InterpreterTest {
         val interpreter = InterpreterImpl()
         interpreter.interpret(ast)
 
-        assertEquals("1.0", interpreter.getVariables()["x"]?.value)
+        assertEquals("1", interpreter.getVariables()["x"]?.value)
     }
 
     @Test
@@ -797,5 +798,13 @@ class InterpreterTest {
         } catch (e: Exception) {
             assertEquals("Variable a not found", e.message)
         }
+    }
+
+    @Test
+    fun testSwitchType() {
+        val interpreter = InterpreterImpl()
+        assertEquals(interpreter.switchType(TokenType.TYPE_NUMBER), TokenType.LITERAL_NUMBER)
+        assertEquals(interpreter.switchType(TokenType.TYPE_STRING), TokenType.LITERAL_STRING)
+        assertEquals(interpreter.switchType(TokenType.TYPE_BOOLEAN), TokenType.LITERAL_BOOLEAN)
     }
 }

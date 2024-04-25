@@ -115,7 +115,7 @@ class InterpreterImpl() : Interpreter {
         }
     }
 
-    private fun switchType(type: TokenType): TokenType {
+    fun switchType(type: TokenType): TokenType {
         return when (type) {
             TokenType.TYPE_NUMBER -> TokenType.LITERAL_NUMBER
             TokenType.TYPE_STRING -> TokenType.LITERAL_STRING
@@ -157,6 +157,15 @@ class InterpreterImpl() : Interpreter {
         }
     }
 
+    private fun intChecker(literal: Literal): Literal {
+        if (literal.type == TokenType.LITERAL_NUMBER) {
+            if (literal.value.contains(".0")) {
+                return Literal(literal.value.toDouble().toInt().toString(), literal.type, literal.isMutable)
+            }
+        }
+        return literal
+    }
+
     private fun evaluateAddition(
         left: Literal,
         right: Literal,
@@ -169,7 +178,8 @@ class InterpreterImpl() : Interpreter {
                 MutableHelper.isMutable(node.token()),
             )
         }
-        return Literal((left.value + right.value), left.type, MutableHelper.isMutable(node.token()))
+        val literal = Literal((left.value + right.value), left.type, MutableHelper.isMutable(node.token()))
+        return intChecker(literal)
     }
 
     private fun evaluateSubtraction(
@@ -177,7 +187,8 @@ class InterpreterImpl() : Interpreter {
         right: Literal,
         node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        val literal = Literal((left.value.toDouble() - right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        return intChecker(literal)
     }
 
     private fun evaluateMultiplication(
@@ -185,7 +196,8 @@ class InterpreterImpl() : Interpreter {
         right: Literal,
         node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        val literal = Literal((left.value.toDouble() * right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        return intChecker(literal)
     }
 
     private fun evaluateDivision(
@@ -193,7 +205,8 @@ class InterpreterImpl() : Interpreter {
         right: Literal,
         node: ExpressionNode,
     ): Literal {
-        return Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        val literal = Literal((left.value.toDouble() / right.value.toDouble()).toString(), left.type, MutableHelper.isMutable(node.token()))
+        return intChecker(literal)
     }
 
     private fun interpretAssignationNode(node: StatementNode.AssignationNode) {
