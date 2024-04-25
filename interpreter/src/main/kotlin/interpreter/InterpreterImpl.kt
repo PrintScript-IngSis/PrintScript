@@ -94,6 +94,9 @@ class InterpreterImpl() : Interpreter {
             } else {
                 expression = getExpression(node.expression)
             }
+            if (expression.type != switchType(node.variable.dataType.token.type)) {
+                throw Exception("Type mismatch")
+            }
             val map = variables.toMutableMap()
             map[id] = expression
             variables = map.toMap()
