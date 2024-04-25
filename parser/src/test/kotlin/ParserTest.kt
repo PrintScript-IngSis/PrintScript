@@ -22,8 +22,8 @@ class ParserTest {
                 Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10)),
                 Token(TokenType.SEMICOLON, ";", Position(0, 12)),
             )
-        val parser: Parser = ParserImpl(tokens)
-        val ast = parser.parse()
+        val parser: Parser = ParserImpl()
+        val ast = parser.parse(tokens)
 
         val expectedAST =
             ProgramNode(
@@ -47,10 +47,10 @@ class ParserTest {
                 Token(TokenType.OPERATOR_PLUS, "+", Position(0, 0)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Invalid statement", e.message)
         }
@@ -69,10 +69,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 12)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Unexpected token: Token(type=OPERATOR_PLUS, value=+, position=Position(line=0, column=10))", e.message)
         }
@@ -92,10 +92,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 14)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Unexpected token: Token(type=PARENTHESIS_CLOSE, value=), position=Position(line=0, column=12))", e.message)
         }
@@ -112,8 +112,8 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 23)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
-        val ast = parser.parse()
+        val parser: Parser = ParserImpl()
+        val ast = parser.parse(tokens)
 
         val expectedAST =
             ProgramNode(
@@ -138,8 +138,8 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 6)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
-        val ast = parser.parse()
+        val parser: Parser = ParserImpl()
+        val ast = parser.parse(tokens)
 
         val expectedAST =
             ProgramNode(
@@ -166,10 +166,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 12)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Expected value after assignment operator", e.message)
         }
@@ -187,10 +187,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 24)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Expected term after operator", e.message)
         }
@@ -204,10 +204,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 24)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Expected value after print operator", e.message)
         }
@@ -222,10 +222,10 @@ class ParserTest {
                 Token(TokenType.SEMICOLON, ";", Position(0, 4)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
+        val parser: Parser = ParserImpl()
 
         try {
-            parser.parse()
+            parser.parse(tokens)
         } catch (e: Exception) {
             assertEquals("Expected value after reassignment operator", e.message)
         }
@@ -263,8 +263,8 @@ class ParserTest {
                 Token(TokenType.BRACKET_CLOSE, "}", Position(0, 0)),
             )
 
-        val parser: Parser = ParserImpl(tokens)
-        val ast = parser.parse()
+        val parser: Parser = ParserImpl()
+        val ast = parser.parse(tokens)
 
         val expectedAST =
             ProgramNode(
@@ -304,8 +304,8 @@ class ParserTest {
                 Token(TokenType.TYPE_NUMBER, "number", Position(0, 21)),
                 Token(TokenType.SEMICOLON, ";", Position(0, 12)),
             )
-        val parser: Parser = ParserImpl(tokens)
-        val ast = parser.parse()
+        val parser: Parser = ParserImpl()
+        val ast = parser.parse(tokens)
         val expectedAST =
             ProgramNode(
                 listOf(

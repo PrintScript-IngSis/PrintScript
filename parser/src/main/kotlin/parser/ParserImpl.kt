@@ -2,6 +2,7 @@ package org.example.parser
 
 import org.example.ast.nodes.ProgramNode
 import org.example.ast.nodes.StatementNode
+import org.example.parser.subparser.CompositeParser
 import org.example.parser.subparser.DeclarationAndAssignationParser
 import org.example.parser.subparser.DeclarationParser
 import org.example.parser.subparser.IfParser
@@ -10,8 +11,8 @@ import org.example.parser.subparser.ReassignationParser
 import org.example.token.Token
 import org.example.token.TokenType
 
-class ParserImpl(private val tokens: List<Token>) : Parser {
-    override fun parse(): ProgramNode {
+class ParserImpl() : Parser {
+    override fun parse(tokens: List<Token>): ProgramNode {
         val statements = separateStatements(tokens)
         val nodes = mutableListOf<StatementNode>()
         for (statement in statements) {
@@ -21,48 +22,17 @@ class ParserImpl(private val tokens: List<Token>) : Parser {
     }
 
     private fun parseStatement(tokens: List<Token>): StatementNode {
-        val firstToken = tokens[0]
-        return when (firstToken.type) {
-            TokenType.KEYWORD_LET, TokenType.KEYWORD_CONST -> checkIfDeclarationOrAsignation(tokens) // skip Node
-            TokenType.KEYWORD_PRINTLN -> startPrintStatement(tokens) // skip Node
-            TokenType.IDENTIFIER -> startReasignationStatement(tokens) // identifier Node
-            TokenType.KEYWORD_IF -> startIfStatement(tokens) // if Node
-            else -> throw Exception("Invalid statement")
-        }
-    }
-
-    private fun checkIfDeclarationOrAsignation(tokens: List<Token>): StatementNode {
-        for (token in tokens) {
-            if (token.type == TokenType.ASSIGNATOR) {
-                return startAssignationStatement(tokens)
-            }
-        }
-        return startDeclarationStatement(tokens)
-    }
-
-    private fun startDeclarationStatement(tokens: List<Token>): StatementNode {
-        val declarationParser = DeclarationParser(tokens)
-        return declarationParser.parse()
-    }
-
-    private fun startIfStatement(tokens: List<Token>): StatementNode {
-        val ifParser = IfParser(tokens)
-        return ifParser.parse()
-    }
-
-    private fun startAssignationStatement(tokens: List<Token>): StatementNode {
-        val declarationAndAssignationParser = DeclarationAndAssignationParser(tokens)
-        return declarationAndAssignationParser.parse()
-    }
-
-    private fun startPrintStatement(tokens: List<Token>): StatementNode {
-        val printParser = PrintlnParser(tokens)
-        return printParser.parse()
-    }
-
-    private fun startReasignationStatement(tokens: List<Token>): StatementNode {
-        val reasignationParser = ReassignationParser(tokens)
-        return reasignationParser.parse()
+        val compositeParser =
+            CompositeParser(
+                listOf(
+                    PrintlnParser(),
+                    DeclarationParser(),
+                    ReassignationParser(),
+                    IfParser(),
+                    DeclarationAndAssignationParser(),
+                ),
+            )
+        return compositeParser.parse(tokens)
     }
 
     private fun separateStatements(tokens: List<Token>): List<List<Token>> {

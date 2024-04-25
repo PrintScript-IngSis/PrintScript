@@ -2,28 +2,31 @@ package org.example.parser.subparser
 
 import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.StatementNode
-import org.example.parser.Parser
 import org.example.parser.ParserImpl
 import org.example.token.Token
 import org.example.token.TokenType
 
-class IfParser(private val tokens: List<Token>) : Parser {
-    override fun parse(): StatementNode {
+class IfParser() : Subparser {
+    override fun canParse(tokens: List<Token>): Boolean {
+        return tokens[0].type == TokenType.KEYWORD_IF
+    }
+
+    override fun parse(tokens: List<Token>): StatementNode {
         val condition = ExpressionNode.IdentifierNode(tokens[2])
-        val firstBracetOpen = findCurlyBracetOpen(tokens, 0)
-        val firstBracetClose = findCurlyBracetClose(tokens, 0)
-        val trueStatement = ParserImpl(tokens.subList(firstBracetOpen + 1, firstBracetClose)).parse().getStatements()[0]
+        val firstBracketOpen = findCurlyBracketOpen(tokens, 0)
+        val firstBracketClose = findCurlyBracketClose(tokens, 0)
+        val trueStatement = ParserImpl().parse(tokens.subList(firstBracketOpen + 1, firstBracketClose)).getStatements()[0]
         val falseStatement =
-            ParserImpl(
+            ParserImpl().parse(
                 tokens.subList(
-                    findCurlyBracetOpen(tokens, firstBracetClose) + 1,
-                    findCurlyBracetClose(tokens, firstBracetClose + 1),
+                    findCurlyBracketOpen(tokens, firstBracketClose) + 1,
+                    findCurlyBracketClose(tokens, firstBracketClose + 1),
                 ),
-            ).parse().getStatements()[0]
+            ).getStatements()[0]
         return StatementNode.IfNode(condition, trueStatement, falseStatement)
     }
 
-    private fun findCurlyBracetOpen(
+    private fun findCurlyBracketOpen(
         tokens: List<Token>,
         index: Int,
     ): Int {
@@ -35,7 +38,7 @@ class IfParser(private val tokens: List<Token>) : Parser {
         throw IllegalArgumentException("No matching bracket open")
     }
 
-    private fun findCurlyBracetClose(
+    private fun findCurlyBracketClose(
         tokens: List<Token>,
         index: Int,
     ): Int {
