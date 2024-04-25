@@ -52,7 +52,7 @@ class ParserTest {
         try {
             parser.parse()
         } catch (e: Exception) {
-            assertEquals("Invalid statement", e.message)
+            assertEquals("Unfinished statement", e.message)
         }
     }
 

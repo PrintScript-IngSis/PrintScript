@@ -26,4 +26,6 @@ enum class TokenType {
     BRACKET_CLOSE,
     KEYWORD_READ_INPUT,
     KEYWORD_READ_ENV,
+    OPERATOR_LESS,
+    OPERATOR_GREATER,
 }
