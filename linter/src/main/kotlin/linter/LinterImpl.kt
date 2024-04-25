@@ -64,7 +64,7 @@ class LinterImpl : Linter {
             is ExpressionNode.VariableNode -> {
                 return evaluateIdentifierNode(node.identifier, rules, errors)
             }
-            is StatementNode.DeclarationNode -> {
+            is StatementNode.DeclarationAndAssignationNode -> {
                 return evaluateIdentifierNode(node.variable.identifier, rules, errors)
             }
             else -> return error

@@ -31,8 +31,8 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
                 val input = file.readText()
                 val lexer = LexerImpl("1.1")
                 val tokens = lexer.tokenize(input)
-                val parser = ParserImpl(tokens)
-                val ast = parser.parse()
+                val parser = ParserImpl()
+                val ast = parser.parse(tokens)
 
                 when {
                     runOption -> runInterpreter(ast)
@@ -52,7 +52,7 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private fun runInterpreter(input: ProgramNode) {
         echo("Running file ${inputFile.name}... \n")
         val interpreter = InterpreterImpl()
-        interpreter.interpret(input)
+        println(interpreter.interpret(input))
     }
 
     private fun runLinter(input: ProgramNode) {
@@ -89,14 +89,15 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private fun printHelp() {
         echo(
             """
-            |Usage: printscript [OPTIONS] INPUT_FILE OPTIONAL_OUTPUT_FILE
+            |Usage: ./gradlew run --args="[OPTION] INPUT_FILE OPTIONAL_OUTPUT_FILE"
             |
             |Options:
             |  -r, --run            Run interpreter
             |  -l, --linter         Run linter
             |  -f, --format         Run formatter (can add optional output file)
-            |  --rules=RULES_FILE  Use custom rules for formatter or linter (optional json file)
             |  -h, --help           Show this message and exit
+            |  
+            |You can also specify a custom rules file for the formatter or linter using --rules=RULES_FILE (must be a JSON file)
             """.trimMargin(),
         )
         return
