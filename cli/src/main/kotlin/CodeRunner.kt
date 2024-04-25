@@ -31,8 +31,8 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
                 val input = file.readText()
                 val lexer = LexerImpl("1.1")
                 val tokens = lexer.tokenize(input)
-                val parser = ParserImpl(tokens)
-                val ast = parser.parse()
+                val parser = ParserImpl()
+                val ast = parser.parse(tokens)
 
                 when {
                     runOption -> runInterpreter(ast)
