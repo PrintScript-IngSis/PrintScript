@@ -65,6 +65,9 @@ class ParserImpl() : Parser {
             }
         }
         if (accumulated.isNotEmpty()) {
+            if (accumulated.last().type != TokenType.SEMICOLON) {
+                throw Exception("Unfinished statement")
+            }
             newList.add(accumulated)
         }
         return newList
