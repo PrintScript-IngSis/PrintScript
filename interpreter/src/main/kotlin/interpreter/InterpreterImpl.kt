@@ -54,15 +54,25 @@ class InterpreterImpl() : Interpreter {
         variables = map.toMap()
     }
 
-    private fun interpretIfNode(node: StatementNode.IfNode): String? {
+    private fun interpretIfNode(node: StatementNode.IfNode): String {
         val condition = node.condition
         val trueStatement = node.trueStatementNode
         val falseStatement = node.falseStatementNode
-        if (variables.getValue(condition.token.value).value == "true") {
-            return interpretStatementNode(trueStatement)
+        val variable = variables.getValue(condition.token.value).type
+        if (variable === TokenType.LITERAL_BOOLEAN) {
+            if (variables.getValue(condition.token.value).value == "true") {
+                return interpretStatementNode(trueStatement)
+            } else if (variables.getValue(condition.token.value).value == "false") {
+                return if (falseStatement != null) {
+                    interpretStatementNode(falseStatement)
+                } else {
+                    ""
+                }
+            }
         } else {
-            return falseStatement?.let { interpretStatementNode(it) }
+            throw Exception("Invalid Argument Type for if statement")
         }
+        return ""
     }
 
     private fun interpretPrintNode(node: StatementNode.PrintNode): String {

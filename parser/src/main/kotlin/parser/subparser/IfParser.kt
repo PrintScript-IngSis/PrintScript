@@ -16,14 +16,19 @@ class IfParser() : Subparser {
         val firstBracketOpen = findCurlyBracketOpen(tokens, 0)
         val firstBracketClose = findCurlyBracketClose(tokens, 0)
         val trueStatement = ParserImpl().parse(tokens.subList(firstBracketOpen + 1, firstBracketClose)).getStatements()[0]
-        val falseStatement =
-            ParserImpl().parse(
-                tokens.subList(
-                    findCurlyBracketOpen(tokens, firstBracketClose) + 1,
-                    findCurlyBracketClose(tokens, firstBracketClose + 1),
-                ),
-            ).getStatements()[0]
-        return StatementNode.IfNode(condition, trueStatement, falseStatement)
+        val hasFalseStatement = tokens.size > firstBracketClose + 1 && tokens[firstBracketClose + 2].type == TokenType.KEYWORD_ELSE
+        if (!hasFalseStatement) {
+            return StatementNode.IfNode(condition, trueStatement, null)
+        } else {
+            val falseStatement =
+                ParserImpl().parse(
+                    tokens.subList(
+                        findCurlyBracketOpen(tokens, firstBracketClose) + 1,
+                        findCurlyBracketClose(tokens, firstBracketClose + 2),
+                    ),
+                ).getStatements()[0]
+            return StatementNode.IfNode(condition, trueStatement, falseStatement)
+        }
     }
 
     private fun findCurlyBracketOpen(
