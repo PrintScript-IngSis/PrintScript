@@ -39,7 +39,6 @@ class ParserImpl() : Parser {
         val newList = mutableListOf<List<Token>>()
         var accumulated = mutableListOf<Token>()
         var bracketCounterIf = 0
-        var foundElse = false
         for (token in tokens) {
             if (token.type == TokenType.BRACKET_OPEN) {
                 bracketCounterIf++
@@ -48,13 +47,11 @@ class ParserImpl() : Parser {
                 bracketCounterIf--
                 accumulated.add(token)
                 if (bracketCounterIf == 0) {
-                    if (foundElse) {
+                    if (!checkForElse(accumulated.size, tokens)) {
                         newList.add(accumulated)
                         accumulated = mutableListOf()
-                        foundElse = false
                     } else {
-                        // should check if there is a following else statement here (keep going if it is the case, otherwise add to the list)
-                        foundElse = true
+                        accumulated.add(token)
                     }
                 }
             } else if (token.type == TokenType.SEMICOLON && bracketCounterIf == 0) {
@@ -65,11 +62,24 @@ class ParserImpl() : Parser {
             }
         }
         if (accumulated.isNotEmpty()) {
-            if (accumulated.last().type != TokenType.SEMICOLON) {
+            if (accumulated.last().type == TokenType.SEMICOLON || accumulated.last().type == TokenType.BRACKET_CLOSE) {
+                newList.add(accumulated)
+            } else {
                 throw Exception("Unfinished statement")
             }
-            newList.add(accumulated)
         }
         return newList
+    }
+
+    private fun checkForElse(
+        sizeAcumulated: Int,
+        tokens: List<Token>,
+    ): Boolean {
+        for (i in sizeAcumulated until tokens.size) {
+            if (tokens[i].type == TokenType.KEYWORD_ELSE) {
+                return true
+            }
+        }
+        return false
     }
 }
