@@ -55,7 +55,7 @@ class LinterImpl : Linter {
                 error += switchNode(node.rightChild, rules, errors)
                 return error
             }
-            is ExpressionNode.IdentifierNode -> {
+            is ExpressionNode.IdNode -> {
                 return evaluateIdentifierNode(node, rules, errors)
             }
             is StatementNode.AssignationNode -> {
@@ -72,16 +72,16 @@ class LinterImpl : Linter {
     }
 
     private fun evaluateIdentifierNode(
-        node: ExpressionNode.IdentifierNode,
+        node: ExpressionNode.IdNode,
         rules: LinterRules.LinterRules,
         errors: List<Error>,
     ): List<Error> {
         val clonedErrors = errors.toMutableList()
         clonedErrors +=
             if (rules.idFormatCamelCase) {
-                evaluateIfCamelCase(node.token)
+                evaluateIfCamelCase(node.token())
             } else {
-                evaluateIfSnakeCase(node.token)
+                evaluateIfSnakeCase(node.token())
             }
         return clonedErrors.toList()
     }

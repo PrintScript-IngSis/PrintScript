@@ -12,7 +12,7 @@ class IfParser() : Subparser {
     }
 
     override fun parse(tokens: List<Token>): StatementNode {
-        val condition = ExpressionNode.IdentifierNode(tokens[2])
+        val condition = ExpressionNode.IdNode.IdentifierNode(tokens[2])
         val firstBracketOpen = findCurlyBracketOpen(tokens, 0)
         val firstBracketClose = findCurlyBracketClose(tokens, 0)
         val trueStatement = ParserImpl().parse(tokens.subList(firstBracketOpen + 1, firstBracketClose)).getStatements()[0]

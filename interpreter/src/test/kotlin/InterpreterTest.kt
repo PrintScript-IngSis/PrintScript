@@ -1,4 +1,5 @@
 import kotlinx.serialization.json.Json
+import org.example.SwitchType
 import org.example.ast.nodes.ProgramNode
 import org.example.interpreter.InterpreterImpl
 import org.example.token.TokenType
@@ -18,7 +19,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -58,7 +60,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable": true
             },
             "dataType":{
                "token":{
@@ -94,7 +97,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -133,7 +137,7 @@ class InterpreterTest {
       {
          "type":"org.example.ast.nodes.StatementNode.PrintNode",
          "printable":{
-            "type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "type":"org.example.ast.nodes.ExpressionNode.IdNode.IdentifierNode",
             "token":{
                "type":"IDENTIFIER",
                "value":"y",
@@ -166,7 +170,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -223,7 +228,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -250,7 +256,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"y",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -261,12 +268,13 @@ class InterpreterTest {
             }
          },
          "expression":{
-            "type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "type":"org.example.ast.nodes.ExpressionNode.IdNode.CreateIdentifierNode",
             "token":{
                "type":"IDENTIFIER",
                "value":"x",
                "position":{"line":0,"column":10}
-            }
+            },
+            "mutable" : true
          }
       }
    ]
@@ -291,7 +299,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -318,7 +327,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"y",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -347,7 +357,7 @@ class InterpreterTest {
             }
          },
          "expression":{
-            "type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
+            "type":"org.example.ast.nodes.ExpressionNode.IdNode.IdentifierNode",
             "token":{
                "type":"IDENTIFIER",
                "value":"x",
@@ -377,7 +387,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -434,7 +445,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -491,7 +503,8 @@ class InterpreterTest {
                   "type":"IDENTIFIER",
                   "value":"x",
                   "position":{"line":0,"column":2}
-               }
+               },
+               "mutable" : true
             },
             "dataType":{
                "token":{
@@ -583,7 +596,8 @@ class InterpreterTest {
                         "type":"IDENTIFIER",
                         "value":"x",
                         "position":{"line":0,"column":2}
-                    }
+                    },
+                    "mutable" : true
                 },
                 "dataType":{
                     "token":{
@@ -645,7 +659,8 @@ class InterpreterTest {
                         "type":"IDENTIFIER",
                         "value":"a",
                         "position":{"line":0,"column":4}
-                    }
+                    },
+                    "mutable" : true
                 },
                 "dataType":{
                     "token":{
@@ -681,7 +696,8 @@ class InterpreterTest {
                             "type":"IDENTIFIER",
                             "value":"b",
                             "position":{"line":0,"column":32}
-                        }
+                        },
+                        "mutable" : true
                     },
                     "dataType":{
                         "token":{
@@ -708,7 +724,8 @@ class InterpreterTest {
                             "type":"IDENTIFIER",
                             "value":"x",
                             "position":{"line":0,"column":55}
-                        }
+                        },
+                        "mutable" : true
                     },
                     "dataType":{
                         "token":{
@@ -740,16 +757,70 @@ class InterpreterTest {
 
     @Test
     fun testInterpreterWhenTryingToUseAVariableNotDeclared() {
-        val astJson = """{"statements":[{"type":"org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
-            "variable":{"identifier":{"token":{"type":"IDENTIFIER","value":"x","position":{"line":0,"column":4}}},
-            "dataType":{"token":{"type":"TYPE_STRING","value":"string","position":{"line":0,"column":6}}}},
-            "expression":{"type":"org.example.ast.nodes.ExpressionNode.BinaryOperationNode",
-            "token":{"type":"OPERATOR_PLUS","value":"+","position":{"line":0,"column":17}},
-            "leftChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
-            "token":{"type":"IDENTIFIER","value":"a","position":{"line":0,"column":15}}},
-            "rightChild":{"type":"org.example.ast.nodes.ExpressionNode.IdentifierNode",
-            "token":{"type":"IDENTIFIER","value":"r","position":{"line":0,"column":19}}}}}]}
-"""
+        val astJson = """{
+  "statements": [
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "x",
+            "position": {
+              "line": 0,
+              "column": 4
+            }
+          },
+          "mutable" : true
+        },
+        "dataType": {
+          "token": {
+            "type": "TYPE_STRING",
+            "value": "string",
+            "position": {
+              "line": 0,
+              "column": 6
+            }
+          }
+        }
+      },
+      "expression": {
+        "type": "org.example.ast.nodes.ExpressionNode.BinaryOperationNode",
+        "token": {
+          "type": "OPERATOR_PLUS",
+          "value": "+",
+          "position": {
+            "line": 0,
+            "column": 17
+          }
+        },
+        "leftChild": {
+          "type": "org.example.ast.nodes.ExpressionNode.IdNode.IdentifierNode",
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "a",
+            "position": {
+              "line": 0,
+              "column": 15
+            }
+          }
+        },
+        "rightChild": {
+          "type": "org.example.ast.nodes.ExpressionNode.IdNode.IdentifierNode",
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "r",
+            "position": {
+              "line": 0,
+              "column": 19
+            }
+          }
+        }
+      }
+    }
+  ]
+}"""
+
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl()
 
@@ -775,7 +846,8 @@ class InterpreterTest {
               "line": 0,
               "column": 4
             }
-          }
+          },
+          "mutable" : true
         },
         "dataType": {
           "token": {
@@ -813,7 +885,8 @@ class InterpreterTest {
               "line": 0,
               "column": 4
             }
-          }
+          },
+            "mutable" : true
         },
         "dataType": {
           "token": {
@@ -838,7 +911,8 @@ class InterpreterTest {
               "line": 0,
               "column": 18
             }
-          }
+          },
+          "mutable" : true
         },
         "dataType": {
           "token": {
@@ -880,7 +954,8 @@ class InterpreterTest {
               "line": 0,
               "column": 4
             }
-          }
+          },
+          "mutable" : true
         },
         "dataType": {
           "token": {
@@ -905,7 +980,8 @@ class InterpreterTest {
               "line": 0,
               "column": 17
             }
-          }
+          },
+          "mutable" : true
         },
         "dataType": {
           "token": {
@@ -1003,9 +1079,8 @@ class InterpreterTest {
 
     @Test
     fun testSwitchType() {
-        val interpreter = InterpreterImpl()
-        assertEquals(interpreter.switchType(TokenType.TYPE_NUMBER), TokenType.LITERAL_NUMBER)
-        assertEquals(interpreter.switchType(TokenType.TYPE_STRING), TokenType.LITERAL_STRING)
-        assertEquals(interpreter.switchType(TokenType.TYPE_BOOLEAN), TokenType.LITERAL_BOOLEAN)
+        assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_NUMBER), TokenType.LITERAL_NUMBER)
+        assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_STRING), TokenType.LITERAL_STRING)
+        assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_BOOLEAN), TokenType.LITERAL_BOOLEAN)
     }
 }

@@ -14,7 +14,8 @@ class DeclarationParser() : Subparser {
     }
 
     override fun parse(tokens: List<Token>): StatementNode {
-        val idNode = ExpressionNode.IdentifierNode(TokenSearcher.searchForToken(tokens, listOf(TokenType.IDENTIFIER)))
+        val mutable = tokens[0].type == TokenType.KEYWORD_LET
+        val idNode = ExpressionNode.IdNode.CreateIdentifierNode(TokenSearcher.searchForToken(tokens, listOf(TokenType.IDENTIFIER)), mutable)
         val typeNode =
             ExpressionNode.TypeNode(
                 TokenSearcher.searchForToken(tokens, listOf(TokenType.TYPE_STRING, TokenType.TYPE_NUMBER, TokenType.TYPE_BOOLEAN)),

@@ -54,7 +54,7 @@ class LinterTest {
                 listOf(
                     StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "Helloworld", Position(0, 0))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "Helloworld", Position(0, 0)), true),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
                         ),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
@@ -74,7 +74,7 @@ class LinterTest {
                 listOf(
                     StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0)), true),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
                         ),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
@@ -92,7 +92,7 @@ class LinterTest {
             ProgramNode(
                 listOf(
                     StatementNode.AssignationNode(
-                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
+                        ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "hello_world", Position(0, 0))),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
                     ),
                 ),
@@ -109,7 +109,7 @@ class LinterTest {
             ProgramNode(
                 listOf(
                     StatementNode.AssignationNode(
-                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "HelloWorld", Position(0, 0))),
+                        ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "HelloWorld", Position(0, 0))),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),
                     ),
                 ),
@@ -127,7 +127,7 @@ class LinterTest {
                 listOf(
                     StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "helloWorld", Position(0, 0)), true),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_STRING, "String", Position(0, 0))),
                         ),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "world", Position(0, 0))),

@@ -64,7 +64,7 @@ class FormatterImpl : Formatter {
         rules: FormattingRules,
     ): String {
         var string = "let "
-        val id = node.variable.identifier.token.value
+        val id = node.variable.identifier.token().value
         string += id
         string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
         string += type(node.variable.dataType.token.type)
@@ -159,8 +159,8 @@ class FormatterImpl : Formatter {
                 }
             }
 
-            is ExpressionNode.IdentifierNode -> {
-                node.token.value
+            is ExpressionNode.IdNode -> {
+                node.token().value
             }
 
             is ExpressionNode.TypeNode -> {

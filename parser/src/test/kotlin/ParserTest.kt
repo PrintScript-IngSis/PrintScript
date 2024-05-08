@@ -30,8 +30,8 @@ class ParserTest {
                 listOf(
                     StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
-                            ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(0, 21))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2)), true),
+                            ExpressionNode.TypeNode(Token(TokenType.LITERAL_NUMBER, "number", Position(0, 21))),
                         ),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_NUMBER, "5", Position(0, 10))),
                     ),
@@ -145,7 +145,7 @@ class ParserTest {
             ProgramNode(
                 listOf(
                     StatementNode.AssignationNode(
-                        ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0))),
+                        ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0))),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_NUMBER, "5", Position(0, 4))),
                     ),
                 ),
@@ -271,13 +271,13 @@ class ParserTest {
                 listOf(
                     StatementNode.DeclarationAndAssignationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
-                            ExpressionNode.TypeNode(Token(TokenType.TYPE_BOOLEAN, "boolean", Position(0, 21))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2)), true),
+                            ExpressionNode.TypeNode(Token(TokenType.LITERAL_BOOLEAN, "boolean", Position(0, 21))),
                         ),
                         ExpressionNode.LiteralNode(Token(TokenType.LITERAL_BOOLEAN, "true", Position(0, 10))),
                     ),
                     StatementNode.IfNode(
-                        condition = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 4))),
+                        condition = ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 4))),
                         trueStatementNode =
                             StatementNode.PrintNode(
                                 ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 15))),
@@ -311,7 +311,7 @@ class ParserTest {
                 listOf(
                     StatementNode.DeclarationNode(
                         ExpressionNode.VariableNode(
-                            ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2))),
+                            ExpressionNode.IdNode.CreateIdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 2)), true),
                             ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(0, 21))),
                         ),
                     ),
