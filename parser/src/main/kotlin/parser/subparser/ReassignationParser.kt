@@ -13,7 +13,7 @@ class ReassignationParser() : Subparser {
     }
 
     override fun parse(tokens: List<Token>): StatementNode {
-        val idNode = ExpressionNode.IdentifierNode(TokenSearcher.searchForToken(tokens, listOf(TokenType.IDENTIFIER)))
+        val idNode = ExpressionNode.IdNode.IdentifierNode(TokenSearcher.searchForToken(tokens, listOf(TokenType.IDENTIFIER)))
         val valueNode =
             OperationParser.createValueNode(
                 OperationCropper.crop(tokens, TokenType.ASSIGNATOR).listIterator(),

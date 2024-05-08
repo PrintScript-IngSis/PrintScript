@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class StatementNode : Node() {
     @Serializable
-    data class AssignationNode(val identifier: ExpressionNode.IdentifierNode, val expression: ExpressionNode) : StatementNode()
+    data class AssignationNode(val identifier: ExpressionNode.IdNode.IdentifierNode, val expression: ExpressionNode) : StatementNode()
 
     @Serializable
     data class DeclarationAndAssignationNode(val variable: ExpressionNode.VariableNode, val expression: ExpressionNode) : StatementNode()
@@ -15,7 +15,7 @@ sealed class StatementNode : Node() {
 
     @Serializable
     data class IfNode(
-        val condition: ExpressionNode.IdentifierNode,
+        val condition: ExpressionNode.IdNode.IdentifierNode,
         val trueStatementNode: StatementNode,
         val falseStatementNode: StatementNode?,
     ) : StatementNode()

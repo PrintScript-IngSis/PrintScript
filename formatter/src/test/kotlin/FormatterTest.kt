@@ -32,7 +32,11 @@ class FormatterTest {
                     StatementNode.DeclarationAndAssignationNode(
                         variable =
                             ExpressionNode.VariableNode(
-                                identifier = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(2, 0))),
+                                identifier =
+                                    ExpressionNode.IdNode.CreateIdentifierNode(
+                                        Token(TokenType.IDENTIFIER, "x", Position(2, 0)),
+                                        true,
+                                    ),
                                 dataType = ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(21, 0))),
                             ),
                         expression = ExpressionNode.LiteralNode(Token(TokenType.LITERAL_NUMBER, "5", Position(30, 0))),
@@ -51,7 +55,7 @@ class FormatterTest {
             ProgramNode(
                 listOf(
                     StatementNode.AssignationNode(
-                        identifier = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(2, 0))),
+                        identifier = ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(2, 0))),
                         expression = ExpressionNode.LiteralNode(Token(TokenType.LITERAL_NUMBER, "5", Position(30, 0))),
                     ),
                 ),
@@ -68,7 +72,7 @@ class FormatterTest {
             ProgramNode(
                 listOf(
                     StatementNode.AssignationNode(
-                        identifier = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0))),
+                        identifier = ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 0))),
                         expression =
                             ExpressionNode.BinaryOperationNode(
                                 Token(TokenType.OPERATOR_PLUS, "+", Position(0, 0)),
@@ -89,7 +93,7 @@ class FormatterTest {
             ProgramNode(
                 listOf(
                     StatementNode.IfNode(
-                        condition = ExpressionNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 4))),
+                        condition = ExpressionNode.IdNode.IdentifierNode(Token(TokenType.IDENTIFIER, "x", Position(0, 4))),
                         trueStatementNode =
                             StatementNode.PrintNode(
                                 ExpressionNode.LiteralNode(Token(TokenType.LITERAL_STRING, "Hello, World!", Position(0, 15))),

@@ -17,7 +17,7 @@ class OperationParser {
             val token = iterator.next()
             return when (token.type) {
                 TokenType.LITERAL_NUMBER, TokenType.LITERAL_STRING -> ExpressionNode.LiteralNode(token)
-                TokenType.IDENTIFIER -> ExpressionNode.IdentifierNode(token)
+                TokenType.IDENTIFIER -> ExpressionNode.IdNode.IdentifierNode(token)
                 else -> error("Unexpected token: $token")
             }
         }
@@ -57,7 +57,7 @@ class OperationParser {
             val token = iterator.next()
             return when (token.type) {
                 TokenType.LITERAL_NUMBER, TokenType.LITERAL_STRING, TokenType.LITERAL_BOOLEAN -> ExpressionNode.LiteralNode(token)
-                TokenType.IDENTIFIER -> ExpressionNode.IdentifierNode(token)
+                TokenType.IDENTIFIER -> ExpressionNode.IdNode.IdentifierNode(token)
                 TokenType.PARENTHESIS_OPEN -> {
                     val node = createComplexExpressionNode(iterator) ?: error("Expected expression inside brackets")
                     if (!iterator.hasNext() || iterator.next().type != TokenType.PARENTHESIS_CLOSE) {
@@ -68,7 +68,7 @@ class OperationParser {
                 TokenType.KEYWORD_READ_INPUT -> ExpressionNode.InputNode(token)
                 TokenType.KEYWORD_READ_ENV -> {
                     val variable =
-                        createFactorNode(iterator) as? ExpressionNode.IdentifierNode
+                        createFactorNode(iterator) as? ExpressionNode.IdNode.IdentifierNode
                             ?: error("Expected identifier after read_env keyword")
                     ExpressionNode.ReadEnvNode(token, variable)
                 }
