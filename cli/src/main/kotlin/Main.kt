@@ -8,21 +8,14 @@ import org.example.parser.ParserImpl
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val text =
-        "const b: number = 5;\n" +
-            "b = 2;"
-    // \
-//    val strDiv = StringDividerImpl()
+        "println(\"this is a test\");\n"
+    val input = text.repeat(32 * 1024)
     val lexer = LexerImpl("1.1")
-
-    val tokens = lexer.tokenize(text)
-
-//    println("Tokens: $tokens")
-
+    val tokens = lexer.tokenize(input)
+    println("lexer done")
     val parser = ParserImpl()
     val ast = parser.parse(tokens)
-
-//    println("AST: $ast")
-
+    println("parser done")
     val interpreter = InterpreterImpl()
-    println(interpreter.interpret(ast))
+    interpreter.interpret(ast)
 }
