@@ -15,32 +15,21 @@ class InterpreterImpl() : Interpreter {
         return variables
     }
 
-    override fun interpret(ast: ProgramNode): String {
+    override fun interpret(ast: ProgramNode) {
         val statements = ast.getStatements()
-        var string = ""
-        var newString: String
         for (statement in statements) {
-            newString = interpretStatementNode(statement)
-            if (newString != "") {
-                if (string.isNotEmpty()) {
-                    string += "\n"
-                }
-                string += newString
-            }
+            interpretStatementNode(statement)
         }
-        return string
     }
 
-    private fun interpretStatementNode(node: StatementNode): String {
-        var string = ""
+    private fun interpretStatementNode(node: StatementNode) {
         when (node) {
-            is StatementNode.PrintNode -> string = interpretPrintNode(node)
+            is StatementNode.PrintNode -> println(interpretPrintNode(node))
             is StatementNode.DeclarationAndAssignationNode -> interpretDeclarationAndAssignationNode(node)
             is StatementNode.DeclarationNode -> interpretDeclarationNode(node)
             is StatementNode.AssignationNode -> interpretAssignationNode(node)
-            is StatementNode.IfNode -> string = interpretIfNode(node)
+            is StatementNode.IfNode -> println(interpretIfNode(node))
         }
-        return string
     }
 
     private fun interpretDeclarationNode(node: StatementNode.DeclarationNode) {
@@ -54,25 +43,22 @@ class InterpreterImpl() : Interpreter {
         variables = map.toMap()
     }
 
-    private fun interpretIfNode(node: StatementNode.IfNode): String {
+    private fun interpretIfNode(node: StatementNode.IfNode) {
         val condition = node.condition
         val trueStatement = node.trueStatementNode
         val falseStatement = node.falseStatementNode
         val variable = variables.getValue(condition.token.value).type
         if (variable === TokenType.LITERAL_BOOLEAN) {
             if (variables.getValue(condition.token.value).value == "true") {
-                return interpretStatementNode(trueStatement)
+                interpretStatementNode(trueStatement)
             } else if (variables.getValue(condition.token.value).value == "false") {
-                return if (falseStatement != null) {
+                if (falseStatement != null) {
                     interpretStatementNode(falseStatement)
-                } else {
-                    ""
                 }
             }
         } else {
             throw Exception("Invalid Argument Type for if statement")
         }
-        return ""
     }
 
     private fun interpretPrintNode(node: StatementNode.PrintNode): String {
