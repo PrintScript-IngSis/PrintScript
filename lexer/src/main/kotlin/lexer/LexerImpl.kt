@@ -41,6 +41,7 @@ class LexerImpl(version: String) : Lexer {
     }
 
     private fun countSpaces(input: String): Int {
-        return input.count { it == ' ' }
+        val index = input.indexOf(';')
+        return if (index != -1) input.substring(0, index).count { it == ' ' } else input.count { it == ' ' }
     }
 }
