@@ -28,7 +28,7 @@ class InterpreterImpl() : Interpreter {
             is StatementNode.DeclarationAndAssignationNode -> interpretDeclarationAndAssignationNode(node)
             is StatementNode.DeclarationNode -> interpretDeclarationNode(node)
             is StatementNode.AssignationNode -> interpretAssignationNode(node)
-            is StatementNode.IfNode -> println(interpretIfNode(node))
+            is StatementNode.IfNode -> interpretIfNode(node)
         }
     }
 
