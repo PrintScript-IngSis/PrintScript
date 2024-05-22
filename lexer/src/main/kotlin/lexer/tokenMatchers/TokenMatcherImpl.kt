@@ -79,8 +79,8 @@ class TokenMatcherImpl(version: String) : TokenMatcher {
         input: String,
         position: Position,
     ): TokenType {
-        for ((regex, tokenType) in regexMap) {
-            if (regex.matches(input)) {
+        for ((pattern, tokenType) in regexMap) {
+            if (pattern.matches(input)) {
                 if (tokenType != TokenType.NOT_IMPLEMENTED) {
                     return tokenType
                 } else {
