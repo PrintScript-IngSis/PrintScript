@@ -65,7 +65,11 @@ class OperationParser {
                     }
                     node
                 }
-                TokenType.KEYWORD_READ_INPUT -> ExpressionNode.InputNode(token)
+                TokenType.KEYWORD_READ_INPUT -> {
+                    iterator.next()
+                    val instruction = iterator.next()
+                    ExpressionNode.InputNode(instruction)
+                }
                 TokenType.KEYWORD_READ_ENV -> {
                     val variable =
                         createFactorNode(iterator) as? ExpressionNode.IdNode.IdentifierNode

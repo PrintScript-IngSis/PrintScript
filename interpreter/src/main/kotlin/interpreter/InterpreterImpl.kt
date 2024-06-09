@@ -91,12 +91,12 @@ class InterpreterImpl() : Interpreter {
         if (variables.containsKey(id)) {
             throw Exception("Variable $id already exists")
         }
-        if (node.expression.token().type == TokenType.KEYWORD_READ_INPUT) {
+        if (node.expression is ExpressionNode.InputNode) {
             val type = SwitchType.typeToLiteral(node.variable.dataType.token.type)
-            println("input a $type")
-            var value = readLine()
-            value = if (type == TokenType.LITERAL_NUMBER) value?.toDouble()?.toString() else value
-            expression = value?.let { Literal(it, type, node.variable.identifier.mutable) }!!
+            println(node.expression.token().value)
+            var value = readln()
+            value = if (type == TokenType.LITERAL_NUMBER) value.toDouble().toString() else value
+            expression = Literal(value, type, node.variable.identifier.mutable)
         } else {
             expression = getExpression(node.expression, node.variable.identifier.mutable)
         }

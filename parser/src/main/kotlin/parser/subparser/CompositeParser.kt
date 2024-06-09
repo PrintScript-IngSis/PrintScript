@@ -5,7 +5,7 @@ import org.example.token.Token
 
 class CompositeParser(private val parsers: List<Subparser>) : Subparser {
     override fun canParse(tokens: List<Token>): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun parse(tokens: List<Token>): StatementNode {
