@@ -15,17 +15,25 @@ class InterpreterImpl() : Interpreter {
         return variables
     }
 
-    override fun interpret(ast: ProgramNode) {
+    override fun interpret(
+        ast: ProgramNode,
+        mock: Boolean,
+        value: String,
+    ) {
         val statements = ast.getStatements()
         for (statement in statements) {
-            interpretStatementNode(statement)
+            interpretStatementNode(statement, mock, value)
         }
     }
 
-    private fun interpretStatementNode(node: StatementNode) {
+    private fun interpretStatementNode(
+        node: StatementNode,
+        mock: Boolean = false,
+        value: String = "",
+    ) {
         when (node) {
             is StatementNode.PrintNode -> println(interpretPrintNode(node))
-            is StatementNode.DeclarationAndAssignationNode -> interpretDeclarationAndAssignationNode(node)
+            is StatementNode.DeclarationAndAssignationNode -> interpretDeclarationAndAssignationNode(node, mock, value)
             is StatementNode.DeclarationNode -> interpretDeclarationNode(node)
             is StatementNode.AssignationNode -> interpretAssignationNode(node)
             is StatementNode.IfNode -> interpretIfNode(node)
@@ -85,7 +93,11 @@ class InterpreterImpl() : Interpreter {
         }
     }
 
-    private fun interpretDeclarationAndAssignationNode(node: StatementNode.DeclarationAndAssignationNode) {
+    private fun interpretDeclarationAndAssignationNode(
+        node: StatementNode.DeclarationAndAssignationNode,
+        mock: Boolean,
+        inputMocked: String,
+    ) {
         val expression: Literal
         val id: String = node.variable.identifier.token().value
         if (variables.containsKey(id)) {
@@ -94,8 +106,13 @@ class InterpreterImpl() : Interpreter {
         if (node.expression is ExpressionNode.InputNode) {
             val type = SwitchType.typeToLiteral(node.variable.dataType.token.type)
             println(node.expression.token().value)
-            var value = readln()
-            value = if (type == TokenType.LITERAL_NUMBER) value.toDouble().toString() else value
+            val value: String
+            if (!mock) {
+                val input = readln()
+                value = if (type == TokenType.LITERAL_NUMBER) input.toDouble().toString() else input
+            } else {
+                value = inputMocked
+            }
             expression = Literal(value, type, node.variable.identifier.mutable)
         } else {
             expression = getExpression(node.expression, node.variable.identifier.mutable)
