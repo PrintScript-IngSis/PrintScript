@@ -1,6 +1,7 @@
 package lexer.director
 
 import lexer.builder.LexerBuilderImpl
+import lexer.impl.BooleanLexer
 import lexer.impl.IdentifierLexer
 import lexer.impl.KeywordLexer
 import lexer.impl.NumberLexer
@@ -39,6 +40,7 @@ class LexerDirector {
                     .withLexer(NumberLexer())
                     .withLexer(OperatorLexer(Constants.OPERATOR_MAP_V11))
                     .withLexer(StringLexer())
+                    .withLexer(BooleanLexer())
                     .build()
             }
 
