@@ -4,11 +4,11 @@ import com.github.ajalt.clikt.parameters.arguments.optional
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
+import lexer.director.LexerDirector
 import linter.LinterImpl
 import org.example.ast.nodes.ProgramNode
 import org.example.formatter.FormatterImpl
 import org.example.interpreter.InterpreterImpl
-import org.example.lexer.LexerImpl
 import org.example.parser.ParserImpl
 
 class CodeRunner : CliktCommand(help = "Run PrintScript code") {
@@ -29,7 +29,7 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
             println(inputFile)
             inputFile.let { file ->
                 val input = file.readText()
-                val lexer = LexerImpl("1.1")
+                val lexer = LexerDirector().createLexer("1.1")
                 val tokens = lexer.tokenize(input)
                 val parser = ParserImpl()
                 val ast = parser.parse(tokens)
