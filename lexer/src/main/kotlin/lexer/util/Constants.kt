@@ -61,5 +61,23 @@ class Constants {
                 "{" to TokenType.BRACKET_OPEN,
                 "}" to TokenType.BRACKET_CLOSE,
             )
+
+        val IDENTIFIER_CONSTRAINTS_V10 = listOf("let", "println", "number", "string")
+
+        val IDENTIFIER_CONSTRAINTS_V11 =
+            listOf(
+                "const",
+                "let",
+                "println",
+                "number",
+                "string",
+                "boolean",
+                "if",
+                "else",
+                "readInput",
+                "true",
+                "false",
+                "readEnv",
+            )
     }
 }
