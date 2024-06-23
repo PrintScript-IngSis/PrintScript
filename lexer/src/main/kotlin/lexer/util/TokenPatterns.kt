@@ -10,7 +10,7 @@ class TokenPatterns {
 
         val IDENTIFIER_PATTERN = Regex("""[a-zA-Z_][a-zA-Z0-9_]*""")
 
-        val BOOLEAN_LITERAL = Regex("""^(true|false)${'$'}""")
+        val BOOLEAN_LITERAL = Regex("""\b(true|false)\b""")
 
         val KEYWORD_PATTERN: (Map<String, TokenType>) -> Regex =
             { tokens -> Regex("""\b(${tokens.keys.joinToString("|")})\b""") }
