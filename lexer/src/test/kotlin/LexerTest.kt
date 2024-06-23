@@ -1,3 +1,4 @@
+import lexer.director.LexerDirector
 import org.example.factories.Position
 import org.example.lexer.Lexer
 import org.example.lexer.LexerImpl
@@ -9,10 +10,12 @@ import kotlin.test.Test
 
 class LexerTest {
     private lateinit var lexer: Lexer
+    private lateinit var oldLexer: Lexer
 
     @BeforeEach
     fun setUp() {
-        lexer = LexerImpl("1.1")
+        lexer = LexerDirector().createLexer("1.1")
+        oldLexer = LexerImpl("1.1")
     }
 
     @Test
@@ -20,6 +23,7 @@ class LexerTest {
         val input = "let x : number = 5;"
 
         val tokens = lexer.tokenize(input)
+        oldLexer.tokenize(input)
 
         val expectedTokens =
             listOf(
