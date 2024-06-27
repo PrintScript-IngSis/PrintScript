@@ -4,7 +4,7 @@ plugins {
     id("coverage-plugin")
 }
 
-version = "1.1.1-SNAPSHOT"
+version = "1.1.3"
 
 dependencies {
     common()
