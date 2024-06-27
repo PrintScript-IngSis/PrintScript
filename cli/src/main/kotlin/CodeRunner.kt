@@ -52,7 +52,7 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private fun runInterpreter(input: ProgramNode) {
         echo("Running file ${inputFile.name}... \n")
         val interpreter = InterpreterImpl()
-        println(interpreter.interpret(input))
+        interpreter.interpret(input)
     }
 
     private fun runLinter(input: ProgramNode) {
