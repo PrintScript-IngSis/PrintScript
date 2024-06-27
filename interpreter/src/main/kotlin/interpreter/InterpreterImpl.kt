@@ -64,9 +64,7 @@ class InterpreterImpl() : Interpreter {
                     interpretStatementNode(falseStatement)
                 }
             }
-        } else {
-            throw Exception("Invalid Argument Type for if statement")
-        }
+        } else { throw Exception("Invalid Argument Type for if statement") }
     }
 
     private fun interpretPrintNode(node: StatementNode.PrintNode): String {
@@ -79,18 +77,14 @@ class InterpreterImpl() : Interpreter {
             }
             is ExpressionNode.BinaryOperationNode -> {
                 getExpression(printable, true).value
-            }
-            else -> throw Exception("Unknown node type")
-        }
+            } else -> throw Exception("Unknown node type") }
     }
 
     private fun printValueOfId(node: ExpressionNode.IdNode): String {
         val id = node.token().value
         if (variables.containsKey(id)) {
             return variables.getValue(id).value
-        } else {
-            throw Exception("Variable $id not found")
-        }
+        } else { throw Exception("Variable $id not found") }
     }
 
     private fun interpretDeclarationAndAssignationNode(
@@ -173,23 +167,18 @@ class InterpreterImpl() : Interpreter {
             TokenType.OPERATOR_PLUS -> {
                 evaluateAddition(left, right, mutable)
             }
-
             TokenType.OPERATOR_MINUS -> {
                 evaluateSubtraction(left, right, mutable)
             }
-
             TokenType.OPERATOR_MULTIPLY -> {
                 evaluateMultiplication(left, right, mutable)
             }
-
             TokenType.OPERATOR_DIVIDE -> {
                 evaluateDivision(left, right, mutable)
             }
-
             TokenType.LITERAL_NUMBER -> {
                 return Literal((node.token.value), node.token.type, mutable)
             }
-
             else -> throw Exception("Unknown operator")
         }
     }
@@ -272,11 +261,7 @@ class InterpreterImpl() : Interpreter {
                 val map = variables.toMutableMap()
                 map[id] = expression
                 variables = map.toMap()
-            } else {
-                throw Exception("Variable $id is not mutable")
-            }
-        } else {
-            throw Exception("Variable $id not found")
-        }
+            } else { throw Exception("Variable $id is not mutable") }
+        } else { throw Exception("Variable $id not found") }
     }
 }
