@@ -65,7 +65,7 @@ class ParserImpl() : Parser {
             if (accumulated.last().type == TokenType.SEMICOLON || accumulated.last().type == TokenType.BRACKET_CLOSE) {
                 newList.add(accumulated)
             } else {
-                throw Exception("Unfinished statement")
+                throw Exception("Unfinished statement, try checking for () or ;")
             }
         }
         return newList
