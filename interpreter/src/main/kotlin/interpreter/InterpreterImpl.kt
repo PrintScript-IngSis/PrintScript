@@ -103,9 +103,11 @@ class InterpreterImpl() : Interpreter {
             throw Exception("Variable $id already exists")
         }
         if (node.expression is ExpressionNode.InputNode) {
+
             val type = SwitchType.typeToLiteral(node.variable.dataType.token.type)
             println(node.expression.token().value)
             val value: String
+
             if (!mock) {
                 val input = readln()
                 value = if (type == TokenType.LITERAL_NUMBER) input.toDouble().toString() else input
@@ -113,7 +115,23 @@ class InterpreterImpl() : Interpreter {
                 value = inputMocked
             }
             expression = Literal(value, type, node.variable.identifier.mutable)
+
+        } else if (node.expression is ExpressionNode.ReadEnvNode) {
+
+            val type = SwitchType.typeToLiteral(node.variable.dataType.token.type)
+            val value: String
+
+            if (!mock) {
+                value = System.getenv(node.expression.token().value) ?: ""
+            } else {
+
+                value = inputMocked
+            }
+
+            expression = Literal(value, type, node.variable.identifier.mutable)
+
         } else {
+
             expression = getExpression(node.expression, node.variable.identifier.mutable)
         }
         if (expression.type != SwitchType.typeToLiteral(node.variable.dataType.token.type)) {
