@@ -1083,6 +1083,7 @@ class InterpreterTest {
         assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_STRING), TokenType.LITERAL_STRING)
         assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_BOOLEAN), TokenType.LITERAL_BOOLEAN)
     }
+
     @Test
     fun testReadInput() {
         val astJson = """{
@@ -1130,7 +1131,7 @@ class InterpreterTest {
 
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl()
-        interpreter.interpret(ast,true,"Alan")
+        interpreter.interpret(ast, true, "Alan")
 
         assertEquals("Alan", interpreter.getVariables()["name"]?.value)
     }
