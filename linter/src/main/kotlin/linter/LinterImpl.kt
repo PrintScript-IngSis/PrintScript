@@ -44,7 +44,7 @@ class LinterImpl : Linter {
         errors: List<Error>,
     ): List<Error> {
         val error = mutableListOf<Error>()
-        when (node) {
+        when (node) { //checks node type
             is StatementNode.PrintNode -> {
                 error += evaluatePrintNode(node, rules, errors)
                 error += switchNode(node.printable, rules, errors)
@@ -117,8 +117,7 @@ class LinterImpl : Linter {
     }
 
     private fun evaluateIfCamelCase(id: String): Boolean {
-        val matches = id.matches(Regex("\\b([a-z]+[0-9]*)([A-Z][a-z0-9]+)+\\b"))
-        return matches
+        return id.matches(Regex("\\b([a-z]+[0-9]*)([A-Z][a-z0-9]+)+\\b"))
     }
 
     private fun evaluateIfSnakeCase(id: String): Boolean {
