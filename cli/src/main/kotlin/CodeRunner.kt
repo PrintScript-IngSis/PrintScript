@@ -20,7 +20,6 @@ class CodeRunner : CliktCommand(help = "Run PrintScript code") {
     private val inputFile by argument(help = "Input file").file(mustExist = true, canBeDir = false, canBeFile = true)
     private val outputFile by argument(help = "Output file for formatter")
         .file(canBeDir = false, canBeFile = true).optional()
-
     private val defaultFormatterRules = "/DefaultFormatterRules.json"
     private val defaultLinterRules = "/DefaultLinterRules.json"
 

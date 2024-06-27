@@ -22,7 +22,7 @@ class LexerDirector {
                     .withLexer(
                         IdentifierLexer(
                             Constants.IDENTIFIER_CONSTRAINTS_V10,
-                        ),
+                            ),
                     )
                     .withLexer(NumberLexer())
                     .withLexer(OperatorLexer(Constants.OPERATOR_MAP_V10))
