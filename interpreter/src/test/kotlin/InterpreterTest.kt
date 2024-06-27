@@ -1083,4 +1083,55 @@ class InterpreterTest {
         assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_STRING), TokenType.LITERAL_STRING)
         assertEquals(SwitchType.typeToLiteral(TokenType.TYPE_BOOLEAN), TokenType.LITERAL_BOOLEAN)
     }
+    @Test
+    fun testReadInput() {
+        val astJson = """{
+  "statements": [
+    {
+      "type": "org.example.ast.nodes.StatementNode.DeclarationAndAssignationNode",
+      "variable": {
+        "identifier": {
+          "token": {
+            "type": "IDENTIFIER",
+            "value": "name",
+            "position": {
+              "line": 0,
+              "column": 6
+            }
+          },
+          "mutable": false
+        },
+        "dataType": {
+          "token": {
+            "type": "LITERAL_STRING",
+            "value": "string",
+            "position": {
+              "line": 0,
+              "column": 12
+            }
+          }
+        }
+      },
+      "expression": {
+        "type": "org.example.ast.nodes.ExpressionNode.InputNode",
+        "token": {
+          "type": "LITERAL_STRING",
+          "value": "Name",
+          "position": {
+            "line": 0,
+            "column": 31
+          }
+        }
+      }
+    }
+  ]
+}
+"""
+
+        val ast = Json.decodeFromString<ProgramNode>(astJson)
+        val interpreter = InterpreterImpl()
+        interpreter.interpret(ast,true,"Alan")
+
+        assertEquals("Alan", interpreter.getVariables()["name"]?.value)
+    }
 }
