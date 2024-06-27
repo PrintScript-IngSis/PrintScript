@@ -1133,8 +1133,6 @@ class InterpreterTest {
         val interpreter = InterpreterImpl()
         interpreter.interpret(ast, true, "Alan")
 
-        assertEquals("", interpreter.getVariables()["name"]?.value)
+        assertEquals("Alan", interpreter.getVariables()["name"]?.value)
     }
-
-
 }
