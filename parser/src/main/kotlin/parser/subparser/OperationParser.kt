@@ -71,10 +71,9 @@ class OperationParser {
                     ExpressionNode.InputNode(instruction)
                 }
                 TokenType.KEYWORD_READ_ENV -> {
-                    val variable =
-                        createFactorNode(iterator) as? ExpressionNode.IdNode.IdentifierNode
-                            ?: error("Expected identifier after read_env keyword")
-                    ExpressionNode.ReadEnvNode(token, variable)
+                    iterator.next()
+                    val variable = iterator.next()
+                    ExpressionNode.ReadEnvNode(variable, ExpressionNode.IdNode.IdentifierNode(variable))
                 }
                 else -> error("Unexpected token: $token")
             }
