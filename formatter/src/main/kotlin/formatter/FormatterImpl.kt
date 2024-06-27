@@ -40,15 +40,12 @@ class FormatterImpl : Formatter {
                 is StatementNode.PrintNode -> {
                     evaluatePrintNode(statement, rules)
                 }
-
                 is StatementNode.DeclarationAndAssignationNode -> {
                     evaluateDeclarationAndAssignationNode(statement, rules)
                 }
-
                 is StatementNode.AssignationNode -> {
                     evaluateAssignationNode(statement, rules)
                 }
-
                 is StatementNode.IfNode -> {
                     evaluateIfNode(statement, rules)
                 }
@@ -150,7 +147,6 @@ class FormatterImpl : Formatter {
             is ExpressionNode.BinaryOperationNode -> {
                 evaluateBinaryOperationNode(node, rules)
             }
-
             is ExpressionNode.LiteralNode -> {
                 if (node.token.type == TokenType.TYPE_NUMBER) {
                     node.token.value.toDouble().toInt().toString()
@@ -158,15 +154,12 @@ class FormatterImpl : Formatter {
                     node.token.value
                 }
             }
-
             is ExpressionNode.IdNode -> {
                 node.token().value
             }
-
             is ExpressionNode.TypeNode -> {
                 node.token.value
             }
-
             else -> throw Exception("Unknown node type")
         }
     }

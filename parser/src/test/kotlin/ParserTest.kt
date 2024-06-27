@@ -52,7 +52,7 @@ class ParserTest {
         try {
             parser.parse(tokens)
         } catch (e: Exception) {
-            assertEquals("Unfinished statement", e.message)
+            assertEquals("Unfinished statement, try checking for () or ;", e.message)
         }
     }
 

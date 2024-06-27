@@ -79,8 +79,7 @@ class InterpreterImpl() : Interpreter {
             }
             is ExpressionNode.BinaryOperationNode -> {
                 getExpression(printable, true).value
-            }
-            else -> throw Exception("Unknown node type")
+            } else -> throw Exception("Unknown node type")
         }
     }
 
@@ -173,23 +172,18 @@ class InterpreterImpl() : Interpreter {
             TokenType.OPERATOR_PLUS -> {
                 evaluateAddition(left, right, mutable)
             }
-
             TokenType.OPERATOR_MINUS -> {
                 evaluateSubtraction(left, right, mutable)
             }
-
             TokenType.OPERATOR_MULTIPLY -> {
                 evaluateMultiplication(left, right, mutable)
             }
-
             TokenType.OPERATOR_DIVIDE -> {
                 evaluateDivision(left, right, mutable)
             }
-
             TokenType.LITERAL_NUMBER -> {
                 return Literal((node.token.value), node.token.type, mutable)
             }
-
             else -> throw Exception("Unknown operator")
         }
     }
