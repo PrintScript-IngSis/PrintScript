@@ -4,7 +4,7 @@ import org.example.token.TokenType
 
 class Constants {
     companion object {
-        //version 1.0
+        // version 1.0
 
         val KEYWORD_MAP_V10 =
             mapOf(
@@ -33,7 +33,7 @@ class Constants {
 
         val IDENTIFIER_CONSTRAINTS_V10 = listOf("let", "println", "number", "string")
 
-        //version 1.1
+        // version 1.1
 
         val KEYWORD_MAP_V11 =
             mapOf(

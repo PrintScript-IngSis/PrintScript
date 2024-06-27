@@ -8,5 +8,5 @@ class CompositeLexer(private val lexers: List<Lexer>) : Lexer {
         return lexers.flatMap { lexer ->
             lexer.tokenize(input)
         }.sortedWith(compareBy({ it.position.line }, { it.position.column }))
-    } //for each lexer, toxenize to verify true or false w regex
+    } // for each lexer, toxenize to verify true or false w regex
 }

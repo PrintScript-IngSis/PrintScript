@@ -44,7 +44,7 @@ class LinterImpl : Linter {
         errors: List<Error>,
     ): List<Error> {
         val error = mutableListOf<Error>()
-        when (node) { //checks node type
+        when (node) { // checks node type
             is StatementNode.PrintNode -> {
                 error += evaluatePrintNode(node, rules, errors)
                 error += switchNode(node.printable, rules, errors)
