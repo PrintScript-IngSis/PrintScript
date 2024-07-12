@@ -25,7 +25,7 @@ class FormatterTest {
     }
 
     @Test
-    fun testFormatDeclarationNode() {
+    fun testFormatDeclarationNodeAndAssignation() {
         val tokens =
             ProgramNode(
                 listOf(
@@ -122,5 +122,29 @@ class FormatterTest {
                 "}\n",
             formatted,
         )
+    }
+
+    @Test
+    fun testFormatDeclarationNode() {
+        val tokens =
+            ProgramNode(
+                listOf(
+                    StatementNode.DeclarationNode(
+                        variable =
+                            ExpressionNode.VariableNode(
+                                identifier =
+                                    ExpressionNode.IdNode.CreateIdentifierNode(
+                                        Token(TokenType.IDENTIFIER, "x", Position(2, 0)),
+                                        true,
+                                    ),
+                                dataType = ExpressionNode.TypeNode(Token(TokenType.TYPE_NUMBER, "number", Position(21, 0))),
+                            ),
+                    ),
+                ),
+            )
+
+        val formatter = FormatterImpl()
+        val formatted = formatter.format(tokens, "src/test/resources/Rules.json")
+        assertEquals("let x : number;\n", formatted)
     }
 }

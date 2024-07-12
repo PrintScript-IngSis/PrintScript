@@ -1,6 +1,7 @@
 package org.example.formatter
 
 import com.google.gson.Gson
+import org.example.SwitchType
 import org.example.ast.nodes.ExpressionNode
 import org.example.ast.nodes.ProgramNode
 import org.example.ast.nodes.StatementNode
@@ -60,7 +61,12 @@ class FormatterImpl : Formatter {
         node: StatementNode.DeclarationNode,
         rules: FormattingRules,
     ): String {
-        var string = "let "
+        var string: String =
+            if (node.variable.identifier.mutable) {
+                "let "
+            } else {
+                "const "
+            }
         val id = node.variable.identifier.token().value
         string += id
         string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
@@ -115,11 +121,16 @@ class FormatterImpl : Formatter {
         node: StatementNode.DeclarationAndAssignationNode,
         rules: FormattingRules,
     ): String {
-        var string = "let "
+        var string: String =
+            if (node.variable.identifier.mutable) {
+                "let "
+            } else {
+                "const "
+            }
         val id = node.variable.identifier.token.value
         string += id
         string += spacesBetweenOperator(rules.numberSpacesBeforeColon, rules.numberSpaceAfterColon, ":")
-        string += type(node.variable.dataType.token.type)
+        string += type(SwitchType.literalToType(node.variable.dataType.token.type))
         string += spacesBetweenOperator(rules.numberSpaceBeforeAssignation, rules.numberSpaceAfterAssignation, "=")
         string += evaluateExpressionNode(node.expression, rules)
         string += ";"
