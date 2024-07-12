@@ -12,5 +12,14 @@ class SwitchType {
                 else -> throw Exception("Unknown type")
             }
         }
+
+        fun literalToType(type: TokenType): TokenType {
+            return when (type) {
+                in setOf(TokenType.LITERAL_NUMBER, TokenType.TYPE_NUMBER) -> TokenType.TYPE_NUMBER
+                in setOf(TokenType.LITERAL_STRING, TokenType.TYPE_NUMBER) -> TokenType.TYPE_STRING
+                in setOf(TokenType.LITERAL_BOOLEAN, TokenType.TYPE_NUMBER) -> TokenType.TYPE_BOOLEAN
+                else -> throw Exception("Unknown type")
+            }
+        }
     }
 }
