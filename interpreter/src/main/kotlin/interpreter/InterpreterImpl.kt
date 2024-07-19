@@ -18,7 +18,7 @@ class InterpreterImpl() : Interpreter {
     override fun interpret(
         ast: ProgramNode,
         mock: Boolean,
-        value: String,
+        value: MutableList<String>,
     ) {
         val statements = ast.getStatements()
         for (statement in statements) {
@@ -29,7 +29,7 @@ class InterpreterImpl() : Interpreter {
     private fun interpretStatementNode(
         node: StatementNode,
         mock: Boolean = false,
-        value: String = "",
+        value: MutableList<String> = mutableListOf(),
     ) {
         when (node) {
             is StatementNode.PrintNode -> println(interpretPrintNode(node))
@@ -95,7 +95,7 @@ class InterpreterImpl() : Interpreter {
     private fun interpretDeclarationAndAssignationNode(
         node: StatementNode.DeclarationAndAssignationNode,
         mock: Boolean,
-        inputMocked: String,
+        inputMocked: MutableList<String>,
     ) {
         val expression: Literal
         val id: String = node.variable.identifier.token().value
@@ -111,7 +111,7 @@ class InterpreterImpl() : Interpreter {
                 val input = readln()
                 value = if (type == TokenType.LITERAL_NUMBER) input.toDouble().toString() else input
             } else {
-                value = inputMocked
+                value = inputMocked.removeAt(0)
             }
             expression = Literal(value, type, node.variable.identifier.mutable)
         } else if (node.expression is ExpressionNode.ReadEnvNode) {
@@ -121,7 +121,7 @@ class InterpreterImpl() : Interpreter {
             if (!mock) {
                 value = System.getenv(node.expression.token().value) ?: ""
             } else {
-                value = inputMocked
+                value = inputMocked.removeAt(0)
             }
 
             expression = Literal(value, type, node.variable.identifier.mutable)

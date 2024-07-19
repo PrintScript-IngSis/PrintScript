@@ -1131,7 +1131,7 @@ class InterpreterTest {
 
         val ast = Json.decodeFromString<ProgramNode>(astJson)
         val interpreter = InterpreterImpl()
-        interpreter.interpret(ast, true, "Alan")
+        interpreter.interpret(ast, true, mutableListOf("Alan"))
 
         assertEquals("Alan", interpreter.getVariables()["name"]?.value)
     }

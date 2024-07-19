@@ -6,6 +6,6 @@ interface Interpreter {
     fun interpret(
         ast: ProgramNode,
         mock: Boolean = false,
-        value: String = "",
+        value: MutableList<String> = mutableListOf(),
     )
 }
