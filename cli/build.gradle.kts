@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.example"
-version = "1.1.4"
+version = "1.1.4-SNAPSHOT"
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:4.3.0")

@@ -8,11 +8,15 @@ import org.example.parser.ParserImpl
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val text =
-        "const name: string = readInput(\"Name:\");\n" + "println(\"Hello \" + name + \"!\");"
-    val lexer = LexerDirector().createLexer("1.1") // creates but is unware of the type
-    val tokens = lexer.tokenize(text) // composite to match regex con el text para tokenizar y darle un tipo
-    val parser = ParserImpl() // creates the necessary parsers despite its tokens
+        "const name: string = readInput();\n" +
+            "const age: number = readInput();\n" +
+            "println(\"Hello, \" + name + \", you are \" + age + \" years old\");"
+    val lexer = LexerDirector().createLexer("1.1")
+    val tokens = lexer.tokenize(text)
+    val parser = ParserImpl()
     val ast = parser.parse(tokens)
     val interpreter = InterpreterImpl()
-    interpreter.interpret(ast)
+    interpreter.interpret(ast, true, mutableListOf("John", "25"))
+//    val formatter = FormatterImpl()
+//    println(formatter.format(ast,"formatter/src/main/resources/Rules.json"))
 }
