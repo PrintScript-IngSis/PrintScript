@@ -13,10 +13,11 @@ dependencies {
     linter()
 }
 
-task("copyPreCommitGitHook", type = Copy::class) {
-    from(".scripts/pre-commit")
+tasks.register<Copy>("copyPreCommitGitHook") {
+    from(".scripts/pre-commit") {
+        fileMode = 493
+    }
     into(".git/hooks")
-    fileMode = 493
 }
 
 tasks {
